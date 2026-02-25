@@ -1,0 +1,39 @@
+[
+  {
+    "slug": "mini-excavadora-xn16",
+    "name": "Mini Excavadora XN16",
+    "image": "/products/xn16.jpg",
+    "description": "Excavadora compacta ideal para cultivos de café y frutales.",
+    "tech": [
+      "Peso operativo: 1.6 t",
+      "Motor Yanmar 3TNV",
+      "Profundidad de excavación: 2.2 m",
+      "Garantía 24 meses",
+      "hola diego desde la casa"
+    ]
+  },
+  {
+    "slug": "mini-volqueta-rippa",
+    "name": "Mini Volqueta Rippa",
+    "image": "/products/rippa.jpg",
+    "description": "Transporte de materiales en terrenos difíciles.",
+    "tech": [
+      "Capacidad 800 kg",
+      "Motor diésel 10 hp",
+      "Tracción 4×4",
+      "Tolva basculante hidráulica"
+    ]
+  },
+  {
+    "slug": "mini-cargador-lth380",
+    "name": "Mini Cargador LTH 380",
+    "image": "/products/lth380.jpg",
+    "description": "Potencia y versatilidad para tareas de carga.",
+    "tech": [
+      "Potencia 37 hp",
+      "Altura de descarga 2.3 m",
+      "Accesorios: balde, ahoyador, martillo",
+      "Servicio post-venta 24/7"
+    ]
+  }
+]

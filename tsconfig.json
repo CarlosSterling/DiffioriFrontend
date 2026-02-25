@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    /* ─── básico ─── */
+    "target": "es2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    /* ─── TypeScript strict + path alias ─── */
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    /* ─── módulo ─── */
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    /* ─── *** aquí el cambio importante *** ─── */
+    "jsx": "preserve", // ← en vez de "preserve"
+    /* opcional: ayuda a TS a encontrar los tipos React/Next */
+    "types": [
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "next"
+    ],
+    /* plugin next para reglas de import/order, etc. */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true,
+    "incremental": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
