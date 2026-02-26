@@ -16,7 +16,7 @@ export default function ProductosPage() {
   const { dict, locale } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [products, setProducts] = useState<CoffeeProduct[]>([]);
-  const [categoriesList, setCategoriesList] = useState<any[]>(categories);
+  const [categoriesList, setCategoriesList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

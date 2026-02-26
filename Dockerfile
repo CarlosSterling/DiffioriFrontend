@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Dependencias de Node
 COPY package*.json ./
-RUN npm ci --ignore-scripts
+RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Copiamos el código
 COPY . .
@@ -36,7 +36,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
 
 # Sólo dependencias de producción
-RUN npm ci --omit=dev --ignore-scripts
+RUN npm install --omit=dev --legacy-peer-deps --ignore-scripts
 
 EXPOSE 3000
 CMD ["node", "node_modules/next/dist/bin/next", "start", "-p", "3000"]
