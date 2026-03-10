@@ -35,13 +35,7 @@ export default function AboutPage() {
       {/* ——— HERO HEADER ——— */}
       <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-black/60 z-10" />
-        <div className="absolute inset-0 z-0">
-          <Image
-             src="/coffee-farm-huila-hero.png" // Using existing image
-             alt="Fincas de Diffiori"
-             removeWrapper
-             className="w-full h-full object-cover opacity-80"
-          />
+        <div className="absolute inset-0 z-0 bg-primary-900/50">
         </div>
         
         <div className="relative z-20 text-center max-w-3xl px-6">
@@ -95,11 +89,7 @@ export default function AboutPage() {
              className="relative"
           >
             <div className="absolute inset-0 bg-primary-100 rounded-2xl transform rotate-3" />
-            <Image
-              src="/slider-prep.png" // Placeholder or reuse slider image
-              alt="Preparación artesanal"
-              className="relative rounded-2xl shadow-xl transform -rotate-2 hover:rotate-0 transition-transform duration-500"
-            />
+            <div className="relative w-full h-64 md:h-full bg-primary-200/50 rounded-2xl shadow-xl transform -rotate-2 hover:rotate-0 transition-transform duration-500" />
           </motion.div>
         </div>
 

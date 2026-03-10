@@ -1,7 +1,7 @@
 const IS_CLIENT = typeof window !== "undefined";
 export const API_URL = IS_CLIENT 
   ? (process.env.NEXT_PUBLIC_API_URL || "/api") 
-  : (process.env.INTERNAL_API_URL || "http://api-diffiori:8000/api");
+  : (process.env.INTERNAL_API_URL ? `${process.env.INTERNAL_API_URL}/api` : "http://api-diffiori:8000/api");
 
 export async function getProducts() {
   try {
@@ -12,6 +12,19 @@ export async function getProducts() {
     return res.json();
   } catch (error) {
     console.error("Error fetching products:", error);
+    return [];
+  }
+}
+
+export async function getFavoriteProducts() {
+  try {
+    const res = await fetch(`${API_URL}/productos/?favorites=true`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch favorite products");
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching favorite products:", error);
     return [];
   }
 }
@@ -107,5 +120,25 @@ export async function fetchHomeCTA() {
   } catch (error) {
     console.error("Error fetching home cta:", error);
     return null;
+  }
+}
+
+export async function checkout(payload: any) {
+  try {
+    const res = await fetch(`${API_URL}/orders/checkout/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(JSON.stringify(errorData) || "Checkout failed");
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Checkout error:", error);
+    throw error;
   }
 }

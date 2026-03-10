@@ -10,54 +10,56 @@ export default function BlogCard({ post }: { post: BlogPost }) {
 
   const title = locale === "en" ? (post.title_en || post.title) : post.title;
   const excerpt = locale === "en" ? (post.excerpt_en || post.excerpt) : post.excerpt;
-  const dateStr = post.published_at 
-    ? new Date(post.published_at).toLocaleDateString(locale === "en" ? "en-US" : "es-CO", { day: 'numeric', month: 'long', year: 'numeric' }) 
+  const dateStr = post.published_at
+    ? new Date(post.published_at).toLocaleDateString(locale === "en" ? "en-US" : "es-CO", { day: 'numeric', month: 'long', year: 'numeric' })
     : (locale === "en" ? "Draft" : "Borrador");
 
   return (
     <>
-      <Card 
-        isPressable 
-        radius="lg" 
-        shadow="sm" 
-        onPress={onOpen} 
-        className="w-full h-full cursor-pointer hover:scale-[1.02] hover:shadow-xl transition-all duration-300 border border-transparent hover:border-primary/20 group"
+      <Card
+        isPressable
+        radius="lg"
+        shadow="sm"
+        onPress={onOpen}
+        className="w-full max-w-sm h-full cursor-pointer hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 border-none bg-default-50/50 group"
         aria-label={`Leer artículo: ${title}`}
       >
         {/* Top Image */}
-        <div className="overflow-hidden h-52 w-full relative">
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+        <div className="overflow-hidden h-48 w-full relative">
+          <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10" />
           <Image
-            src={post.cover_image || "/coffee-farm-hero.png"}
+            src={post.cover_image || "/media/hero/slider-capuchino.png"}
             alt={title}
             width={600}
-            height={320}
-            className="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+            height={400}
+            className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
             removeWrapper
           />
         </div>
 
-        <CardBody className="flex flex-col gap-4 p-6">
-          <div>
+        <CardBody className="flex flex-col h-full gap-3 p-5">
+          <div className="flex-grow">
             <div className="flex items-center gap-3 mb-2">
-               <Avatar src="/logo-icon.png" name="Diffiori" size="sm" className="bg-primary/10" />
-               <h3 className="font-bold text-lg text-default-900 line-clamp-2 group-hover:text-primary transition-colors">{title}</h3>
+              <Avatar src="/logo-icon.png" name="Diffiori" size="sm" className="bg-primary/10" />
+              <h3 className="font-bold text-lg text-default-900 line-clamp-2 group-hover:text-primary transition-colors">{title}</h3>
             </div>
-            
+
             <p className="flex items-center gap-1 text-sm text-default-500 mb-2">
               <CalendarIcon size={14} className="shrink-0 text-primary" />
               {dateStr}
             </p>
-            
-            <p className="text-sm text-default-600 line-clamp-3 leading-relaxed italic">
+          </div>
+
+          <div className="bg-default-50/50 p-3 rounded-xl border border-default-100/50 min-h-[70px] flex items-center">
+            <p className="text-[13px] text-default-600 line-clamp-3 leading-relaxed italic w-full">
               &ldquo;{excerpt}&rdquo;
             </p>
           </div>
 
-          <div className="mt-auto pt-2">
-             <span className="text-primary font-bold text-sm flex items-center gap-1 group-hover:underline">
-               {dict.nav.leerMas} <span className="text-lg">→</span>
-             </span>
+          <div className="mt-auto pt-1">
+            <span className="text-primary font-bold text-sm flex items-center gap-1 group-hover:underline">
+              {dict.nav.leerMas} <span className="text-lg">→</span>
+            </span>
           </div>
         </CardBody>
       </Card>
@@ -78,14 +80,14 @@ export default function BlogCard({ post }: { post: BlogPost }) {
 
               <DrawerBody className="space-y-6 px-6 pb-8 max-h-[80vh] overflow-y-auto">
                 <Image
-                  src={post.cover_image || "/coffee-farm-hero.png"}
+                  src={post.cover_image || "/media/hero/slider-capuchino.png"}
                   alt={title}
                   width={900}
                   height={500}
                   className="w-full aspect-[16/9] rounded-lg object-cover"
                 />
 
-                <div 
+                <div
                   className="prose prose-sm sm:prose-base dark:prose-invert max-w-none text-default-600 space-y-4 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: locale === "en" ? (post.content_en || post.content) : post.content }}
                 />

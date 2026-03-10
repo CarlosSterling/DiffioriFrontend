@@ -126,10 +126,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   <Button
                     as={NextLink}
                     href="/checkout"
-                    color="primary"
                     fullWidth
                     size="lg"
                     radius="full"
+                    className="btn-gold-premium"
                     onPress={onClose}
                   >
                     {t.goToCheckout}

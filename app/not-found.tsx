@@ -24,10 +24,9 @@ export default function NotFound() {
         <Button
           as={Link}
           href="/"
-          color="primary"
           size="lg"
           radius="full"
-          className="font-bold px-8 shadow-xl shadow-primary/20"
+          className="font-bold px-8 btn-gold-premium"
         >
           Volver al Inicio
         </Button>

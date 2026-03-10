@@ -5,10 +5,13 @@ import clsx from "clsx";
 
 import { Providers } from "./providers";
 import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
+import { fontSans, fontSerif, fontMontserrat } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BottomNav } from "@/components/BottomNav";
+import { WhatsAppChat } from "@/components/WhatsAppChat";
+import { BackgroundPatterns } from "@/components/BackgroundPatterns";
+import { ScrollProgressBar } from "@/components/ScrollProgressBar";
 
 /* ------------ META ------------ */
 export const metadata: Metadata = {
@@ -47,12 +50,11 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: ["/og-image.png"],
-    creator: "@diffiorecafe",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: "/brand-logo.jpg",
+    shortcut: "/brand-logo.jpg",
+    apple: "/brand-logo.jpg",
   },
 };
 
@@ -77,9 +79,13 @@ export default function RootLayout({
         className={clsx(
           "min-h-screen flex flex-col bg-background font-sans antialiased text-foreground",
           fontSans.variable,
+          fontSerif.variable,
+          fontMontserrat.variable
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <ScrollProgressBar />
+          <BackgroundPatterns />
           {/* ─── Header fijo ─── */}
           <header className="fixed inset-x-0 top-0 z-50">
             <Navbar />
@@ -88,13 +94,16 @@ export default function RootLayout({
           {/* ② main se expande para rellenar el espacio libre */}
           {/*    pt-20 = alto del header (ajusta si tu barra cambia)     */}
           {/*    pb-20 = espacio para el BottomNav en móvil              */}
-          <main className="flex-grow pt-24 sm:pt-28 xl:pt-32 pb-20 xl:pb-0">{children}</main>
+          <main className="flex-grow pt-32 sm:pt-40 xl:pt-48 pb-20 xl:pb-0">{children}</main>
 
           {/* ─── Footer siempre al fondo ─── */}
           <Footer />
 
           {/* ─── Navegación inferior móvil ─── */}
           <BottomNav />
+
+          {/* ─── WhatsApp Chat ─── */}
+          <WhatsAppChat />
         </Providers>
       </body>
     </html>

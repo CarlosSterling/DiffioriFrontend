@@ -1,54 +1,44 @@
 // next.config.js
 /** @type {import('next').NextConfig} */
-const backendURL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-const { hostname, protocol } = new URL(backendURL);
+
+// URL interna para que el servidor Next.js (dentro de Docker) alcance el API
+const backendURL = process.env.INTERNAL_API_URL || "http://api-diffiori:8000";
 
 module.exports = {
-  /*  ▸ render “stand‑alone” para que el contenedor solo
+  /*  ▸ render "stand-alone" para que el contenedor solo
       necesite `node` sin dependencias extra                */
   output: "standalone",
 
-  /*  ▸ NO dejes que advertencias de ESLint rompan el build.
-      Las “errors” siguen deteniendo la compilación.         */
+  /*  ▸ NO dejes que advertencias de ESLint rompan el build. */
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  /*  ▸ Dominios/paths desde los que Next <Image/> puede
-      descargar imágenes (covers, galerías, mapas, …).       */
+  /*  ▸ Imágenes: se desactiva el optimizer de Next.js (unoptimized: true)
+      Razón: las URLs de media vienen del backend con host "localhost:8080".
+      El servidor Next.js (dentro de Docker) NO puede alcanzar localhost:8080
+      por la red interna, lo que provoca "Error: Load failed".
+      Con unoptimized=true, el browser carga las imágenes directamente
+      sin pasar por el proxy /_next/image — funciona siempre.            */
   images: {
+    unoptimized: true,
     remotePatterns: [
-      /* media del backend ─ producción o local  */
-      {
-        protocol: protocol.replace(":", ""), // "http" | "https"
-        hostname: hostname,
-        port: "",
-        pathname: "/media/**",
-      },
-      /* mapa estático de wikimedia              */
-      {
-        protocol: "https",
-        hostname: "maps.wikimedia.org",
-        pathname: "/**",
-      },
-      /* Google User Content (Reviews) */
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "googleusercontent.com",
-        pathname: "/**",
-      },
+      // Cualquier host HTTP/HTTPS (catch-all para dev + prod)
+      { protocol: "http",  hostname: "**", pathname: "/**" },
+      { protocol: "https", hostname: "**", pathname: "/**" },
     ],
   },
+
+  /*  ▸ Proxy del API: reescribe /api/* → backend interno de Docker     */
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: `${backendURL}/api/:path*`,
+        destination: `${backendURL}/api/:path*/`,
+      },
+      {
+        source: "/media/:path*",
+        destination: `${backendURL}/media/:path*`,
       },
     ];
   },

@@ -12,6 +12,7 @@ export interface LocaleDict {
     cotizarAhora: string;
     leerMas: string;
     cargando: string;
+    topBar?: string;
   };
   hero: {
     title: string;
@@ -52,6 +53,8 @@ export interface LocaleDict {
     close: string;
     quoteIt: string;
     price: string;
+    category: string;
+    description: string;
   };
   cafe: {
     title: string;
@@ -60,6 +63,7 @@ export interface LocaleDict {
     buyNow: string;
     variant: string;
     added: string;
+    available: string;
   };
   cart: {
     title: string;
@@ -115,6 +119,15 @@ export interface LocaleDict {
     emptyCart: string;
     goToShop: string;
     remove: string;
+    confirmWhatsApp: string;
+    orderNumber: string;
+  };
+  whatsappChat: {
+    title: string;
+    greeting: string;
+    placeholder: string;
+    send: string;
+    close: string;
   };
 }
 
@@ -132,6 +145,7 @@ const es: LocaleDict = {
     cotizarAhora: "Cotizar ahora",
     leerMas: "Leer más",
     cargando: "Cargando...",
+    topBar: "☕ Envío gratis por compras superiores a $150.000",
   },
   /* ── Hero / Home ── */
   hero: {
@@ -188,6 +202,8 @@ const es: LocaleDict = {
     close: "Cerrar",
     quoteIt: "Cotizar",
     price: "Precio",
+    category: "Categoría",
+    description: "Descripción",
   },
   /* ── Café / Catálogo ── */
   cafe: {
@@ -197,6 +213,7 @@ const es: LocaleDict = {
     buyNow: "Comprar ahora",
     variant: "Variante",
     added: "¡Agregado!",
+    available: "Disponible",
   },
   /* ── Carrito ── */
   cart: {
@@ -254,6 +271,15 @@ const es: LocaleDict = {
     emptyCart: "Tu carrito está vacío. Agrega productos antes de continuar.",
     goToShop: "Ir a la tienda",
     remove: "Eliminar",
+    confirmWhatsApp: "Confirmar por WhatsApp",
+    orderNumber: "Pedido #",
+  },
+  whatsappChat: {
+    title: "Chat con Diffiori",
+    greeting: "¡Hola! 👋 ¿En qué podemos ayudarte hoy?",
+    placeholder: "Escribe tu mensaje aquí...",
+    send: "Enviar a WhatsApp",
+    close: "Cerrar",
   },
 };
 

@@ -18,6 +18,7 @@ export interface CartItem {
   price: number;
   image: string;
   variant: string;
+  variantId: string | number;
   qty: number;
 }
 

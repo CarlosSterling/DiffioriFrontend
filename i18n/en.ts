@@ -15,6 +15,7 @@ const en: LocaleDict = {
     cotizarAhora: "Get a quote now",
     leerMas: "Read more",
     cargando: "Loading...",
+    topBar: "☕ Free shipping on orders over $150,000 COP",
   },
   /* ── Hero / Home ── */
   hero: {
@@ -71,6 +72,8 @@ const en: LocaleDict = {
     close: "Close",
     quoteIt: "Get a quote",
     price: "Price",
+    category: "Category",
+    description: "Description",
   },
   /* ── Café / Catálogo ── */
   cafe: {
@@ -80,6 +83,7 @@ const en: LocaleDict = {
     buyNow: "Buy now",
     variant: "Variant",
     added: "Added!",
+    available: "Available",
   },
   /* ── Cart ── */
   cart: {
@@ -137,6 +141,15 @@ const en: LocaleDict = {
     emptyCart: "Your cart is empty. Add products before continuing.",
     goToShop: "Go to shop",
     remove: "Remove",
+    confirmWhatsApp: "Confirm via WhatsApp",
+    orderNumber: "Order #",
+  },
+  whatsappChat: {
+    title: "Chat with Diffiori",
+    greeting: "Hello! 👋 How can we help you today?",
+    placeholder: "Type your message here...",
+    send: "Send to WhatsApp",
+    close: "Close",
   },
 };
 

@@ -12,12 +12,18 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { useState } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
 import type { Product } from "@/types/api";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { locale, dict } = useLanguage();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [hovered, setHovered] = useState(false);
   const coverSrc = product.cover ?? "/placeholder.jpg";
+
+  const name = locale === "en" ? (product.name_en || product.name) : product.name;
+  const shortDesc = locale === "en" ? (product.short_desc_en || product.short_desc) : product.short_desc;
+  const description = locale === "en" ? (product.description_en || product.description) : product.description;
 
   return (
     <>
@@ -38,7 +44,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="h-64 w-full overflow-hidden">
           <Image
             src={coverSrc}
-            alt={product.name}
+            alt={name}
             width={640}
             height={420}
             style={{
@@ -50,24 +56,24 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="p-4 py-3 flex flex-col gap-1.5">
-          <h3 className="text-foreground font-bold text-lg truncate leading-tight">{product.name}</h3>
+          <h3 className="text-foreground font-bold text-lg truncate leading-tight">{name}</h3>
           
           <p className="text-default-500 text-xs line-clamp-2">
-            {product.short_desc || (product.description ? 
-              (product.description.length > 100 ? product.description.substring(0, 97) + "..." : product.description) 
+            {shortDesc || (description ? 
+              (description.length > 100 ? description.substring(0, 97) + "..." : description) 
               : "")}
           </p>
           
           <div className="flex items-center justify-between mt-2">
-            <span className="text-primary font-bold text-lg">
+            <span className="text-[#606060] font-bold text-lg">
               {Number(product.price).toLocaleString("es-CO", {
                 style: "currency",
                 currency: "COP",
                 minimumFractionDigits: 0,
               })}
             </span>
-            <Button size="sm" radius="lg" color="primary" onPress={onOpen}>
-              Ver más
+            <Button size="sm" radius="lg" className="btn-gold-premium" onPress={onOpen}>
+              {locale === "en" ? "View more" : "Ver más"}
             </Button>
           </div>
         </div>
@@ -79,7 +85,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <DrawerContent>
           {() => (
             <>
-              <DrawerHeader>{product.name}</DrawerHeader>
+              <DrawerHeader>{name}</DrawerHeader>
 
               <DrawerBody className="space-y-6">
                 {/* GALERÍA RESPONSIVA */}
@@ -89,7 +95,7 @@ export default function ProductCard({ product }: { product: Product }) {
                       <Image
                         key={img.id}
                         src={img.image}
-                        alt={img.alt || product.name}
+                        alt={(locale === "en" ? img.alt_en : img.alt) || img.alt || name}
                         width={400}
                         height={260}
                         className="rounded-lg h-40 w-full object-cover"
@@ -99,10 +105,10 @@ export default function ProductCard({ product }: { product: Product }) {
                   </div>
                 )}
 
-                <p>{product.short_desc}</p>
+                <p>{shortDesc}</p>
                 {/* Descripción en viñetas */}
                 <ul className="list-disc pl-5 space-y-1">
-                  {product.description
+                  {description
                     .split(/\r?\n/)
                     .map(
                       (line, idx) => line.trim() && <li key={idx}>{line}</li>
@@ -110,7 +116,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 </ul>
 
                 <div className="flex items-center gap-3 bg-primary-50 p-4 rounded-xl">
-                  <span className="text-primary-700 font-medium">Precio:</span>
+                  <span className="text-primary-700 font-medium">{locale === "en" ? "Price:" : "Precio:"}</span>
                   <span className="text-2xl font-bold text-primary-800">
                     {Number(product.price).toLocaleString("es-CO", {
                       style: "currency",
@@ -123,10 +129,10 @@ export default function ProductCard({ product }: { product: Product }) {
 
               <DrawerFooter>
                 <Button variant="light" color="danger" onPress={onClose}>
-                  Cerrar
+                  {locale === "en" ? "Close" : "Cerrar"}
                 </Button>
-                <Button color="primary" as="a" href="/contact">
-                  Cotizar
+                <Button className="btn-gold-premium" as="a" href="/contact">
+                  {locale === "en" ? "Quote" : "Cotizar"}
                 </Button>
               </DrawerFooter>
             </>

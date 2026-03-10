@@ -2,14 +2,17 @@
 /* ---------- PRODUCT ---------- */
 export interface ProductImage {
   id: number;
-  image: string;          // URL absoluta que devuelve DRF
+  image: string;
   alt: string | null;
+  alt_en?: string | null;
 }
 
 export interface ProductVariant {
   id: number;
   weight: string;
+  weight_en?: string;
   grind: string;
+  grind_en?: string;
   price: string;
   stock: number;
   is_active: boolean;
@@ -18,6 +21,7 @@ export interface ProductVariant {
 export interface Product {
   id: number;
   name: string;
+  name_en?: string;
   cover: string | null;
   short_desc: string;
   short_desc_en?: string;
@@ -38,13 +42,15 @@ export interface BlogPost {
   content: string;
   content_en?: string;
   cover_image: string | null;
-  published_at: string;   // ISO string
+  published_at: string;
 }
 /* ---------- FAQs ---------- */
 export interface Faq {
   id: number;
   question: string;
+  question_en?: string;
   answer: string;
+  answer_en?: string;
 }
 
 
@@ -54,6 +60,7 @@ export interface ClientImage {
   id: number;
   image: string;
   alt: string | null;
+  alt_en?: string | null;
 }
 
 export interface Client {
@@ -64,6 +71,8 @@ export interface Client {
   cover: string | null;
   testimonial: string;
   testimonial_en?: string;
+  description: string;
+  description_en?: string;
   location: string;
   latitude: string | null;
   longitude: string | null;

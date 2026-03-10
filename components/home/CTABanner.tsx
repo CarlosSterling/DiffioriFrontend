@@ -20,34 +20,38 @@ export const CTABanner = ({
   backgroundImage,
 }: CTABannerProps) => {
   return (
-    <section className="relative py-32 px-6 overflow-hidden">
+    <section className="relative py-32 px-6 overflow-hidden bg-[#333333] dark:bg-[#1f1f22]">
       {/* Background with parallax-like static effect or simple cover */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: `url('${backgroundImage}')` }}
+        className="absolute inset-0 z-0 bg-cover bg-center bg-fixed opacity-100"
+        style={{ backgroundImage: `url('${backgroundImage || ""}')` }}
       />
       {/* Dark overlay for readability */}
-      <div className="absolute inset-0 z-10 bg-black/60" />
+      <div className="absolute inset-0 z-10 bg-[#333333]/70 dark:bg-[#1a1a1a]/80" />
 
       <div className="relative z-20 max-w-4xl mx-auto text-center text-white">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold mb-6 font-display tracking-tight"
-        >
-          {title}
-        </motion.h2>
+        {title && (
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold mb-6 font-display tracking-tight"
+          >
+            {title}
+          </motion.h2>
+        )}
         
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="text-lg md:text-xl opacity-90 mb-10 font-light leading-relaxed max-w-2xl mx-auto"
-        >
-          {subtitle}
-        </motion.p>
+        {subtitle && (
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg md:text-xl opacity-90 mb-10 font-light leading-relaxed max-w-2xl mx-auto"
+          >
+            {subtitle}
+          </motion.p>
+        )}
         
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -59,7 +63,7 @@ export const CTABanner = ({
             as={Link}
             href={ctaLink}
             size="lg"
-            className="bg-white text-black font-bold px-10 py-6 rounded-full hover:scale-105 transition-transform"
+            className="font-bold px-10 py-6 rounded-full btn-gold-premium"
           >
             {ctaText}
           </Button>

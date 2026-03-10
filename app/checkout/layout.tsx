@@ -5,7 +5,7 @@ export default function CheckoutLayout({
 }) {
   return (
     <section className="py-16">
-      <div className="container mx-auto max-w-4xl px-6">{children}</div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">{children}</div>
     </section>
   );
 }

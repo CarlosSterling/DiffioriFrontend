@@ -1,4 +1,4 @@
-import { heroui } from "@heroui/theme";
+const { heroui } = require("@heroui/theme");
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -12,8 +12,10 @@ const config = {
     extend: {
       /* —— Tipografías base —— */
       fontFamily: {
-        sans: ["var(--font-sans)"],
-        display: ["var(--font-sans)"],
+        sans: ["var(--font-montserrat)", "var(--font-sans)", "sans-serif"],
+        display: ["var(--font-montserrat)", "var(--font-sans)", "sans-serif"],
+        serif: ["var(--font-serif)", "serif"],
+        montserrat: ["var(--font-montserrat)"],
         mono: ["var(--font-mono)"],
       },
 
@@ -21,17 +23,17 @@ const config = {
       colors: {
         /* Rojo principal (botones, enlaces, focos) */
         primary: {
-          DEFAULT: "#8B3D30",
-          50:  "#fbf4f2",
-          100: "#f4e3df",
-          200: "#e8c6bf",
-          300: "#dba49a",
-          400: "#cf8476",
-          500: "#8B3D30",
-          600: "#7b362a",
-          700: "#6a2e24",
-          800: "#5a271f",
-          900: "#4a201a",
+          DEFAULT: "#C5A059", // Dorado principal
+          50:  "#f9f6ef",
+          100: "#f2ecdf",
+          200: "#e6d9bf",
+          300: "#d9c69f",
+          400: "#cdb37f",
+          500: "#C5A059",
+          600: "#b08d45",
+          700: "#9b7a3c",
+          800: "#866733",
+          900: "#71552a",
         },
         /* Naranja de acento para destacar precios u ofertas */
         accent: {
@@ -43,6 +45,7 @@ const config = {
           DEFAULT: "#C5A059", // Dorado elegante
           500: "#C5A059",
           600: "#B08D45",
+          light: "#f9e895",
         },
       },
     },
@@ -52,18 +55,26 @@ const config = {
       themes: {
         light: {
           colors: {
-            background: "#F5F2EB",
+            background: "#F2F2F2", // Gris neutro claro
             foreground: "#1a1a1a",
-            content1: "#F8F5F0",
-            content2: "#FAF8F4",
-            content3: "#FCFAF7",
-            content4: "#FDFCFA",
+            primary: {
+              DEFAULT: "#C5A059", // Dorado
+              foreground: "#333333", // Gris oscuro para el texto
+            },
+            content1: "#F7F7F7",
+            content2: "#FAFAFA",
+            content3: "#FCFCFC",
+            content4: "#FFFFFF",
           },
         },
         dark: {
           colors: {
             background: "#050505", // Rich Black (OLED friendly)
             foreground: "#ECEDEE",
+            primary: {
+              DEFAULT: "#C5A059",
+              foreground: "#1a1a1a",
+            },
             content1: "#18181b", // Zinc 900 (Cards)
             content2: "#27272a", // Zinc 800
             content3: "#3f3f46", // Zinc 700

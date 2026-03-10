@@ -52,18 +52,28 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
   const variants = {
     enter: {
       opacity: 0,
-      scale: 1.01, // Extremely subtle to avoid any perceived pixelation
     },
     center: {
       zIndex: 1,
       opacity: 1,
-      scale: 1,
     },
     exit: {
       zIndex: 0,
       opacity: 0,
-      transition: { duration: 1.2 }
+      transition: { duration: 1.5 }
     },
+  };
+
+  const imageVariants = {
+    animate: {
+      scale: [1, 1.15],
+      x: [0, -20],
+      y: [0, -10],
+      transition: {
+        duration: interval / 1000 + 2,
+        ease: "linear",
+      }
+    }
   };
 
   const textVariants = {
@@ -73,7 +83,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#333333] dark:bg-[#1f1f22]">
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentIndex}
@@ -81,48 +91,68 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            opacity: { duration: 2, ease: "easeInOut" }, // Slower fade
-            scale: { duration: 15, ease: "linear" }, // Very slow zoom
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(_, info) => {
+            if (info.offset.x > 100) prevSlide();
+            else if (info.offset.x < -100) nextSlide();
           }}
-          className="absolute inset-0 w-full h-full"
+          transition={{ opacity: { duration: 1.5, ease: "easeInOut" } }}
+          className="absolute inset-0 w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"
         >
-          <img
-            src={slides[currentIndex].image}
-            alt={locale === "en" ? (slides[currentIndex].titleEn || slides[currentIndex].title) : slides[currentIndex].title}
-            className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
-          />
+          {slides[currentIndex].image && (
+            <motion.img
+              key={`img-${currentIndex}`}
+              src={slides[currentIndex].image}
+              alt={locale === "en" ? (slides[currentIndex].titleEn || slides[currentIndex].title) : slides[currentIndex].title}
+              variants={imageVariants}
+              initial={false}
+              animate="animate"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+              className="absolute inset-0 w-full h-full object-contain object-center select-none pointer-events-none"
+            />
+          )}
           {/* Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#333333]/40 via-transparent to-[#1a1a1a]/80" />
 
           {/* Dynamic Content Overlay - Right Aligned like reference */}
-          <div className="absolute inset-0 flex flex-col items-end justify-center text-right px-6 md:px-20 z-10 max-w-7xl mx-auto">
-            <motion.h1
-              variants={textVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 1.2, delay: 0.2 }}
-              className={titlePrimitive({
-                class: "text-white text-4xl md:text-7xl lg:text-8xl mb-4 leading-tight",
-              })}
-            >
-              {locale === "en" ? (slides[currentIndex].titleEn || slides[currentIndex].title) : slides[currentIndex].title}
-            </motion.h1>
+          <div className="absolute inset-0 flex flex-col items-end justify-end text-right px-6 md:pr-56 md:pl-20 pb-20 z-10">
+            {/* Title - only show if not empty */}
+            {(locale === "en" ? (slides[currentIndex].titleEn || slides[currentIndex].title) : slides[currentIndex].title) && (
+              <motion.h1
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 1.2, delay: 0.2 }}
+                className={titlePrimitive({
+                  class: "text-white text-4xl md:text-7xl lg:text-8xl mb-4 leading-tight",
+                })}
+              >
+                {locale === "en" ? (slides[currentIndex].titleEn || slides[currentIndex].title) : slides[currentIndex].title}
+              </motion.h1>
+            )}
 
-            <motion.p
-              variants={textVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 1.2, delay: 0.4 }}
-              className={subtitlePrimitive({
-                className: "max-w-xl text-right mb-10 text-gray-200 text-lg md:text-xl",
-              })}
-            >
-              {locale === "en" ? (slides[currentIndex].subtitleEn || slides[currentIndex].subtitle) : slides[currentIndex].subtitle}
-            </motion.p>
+            {/* Subtitle - only show if not empty */}
+            {(locale === "en" ? (slides[currentIndex].subtitleEn || slides[currentIndex].subtitle) : slides[currentIndex].subtitle) && (
+              <motion.p
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 1.2, delay: 0.4 }}
+                className={subtitlePrimitive({
+                  className: "max-w-xl text-right mb-10 text-gray-200 text-lg md:text-xl",
+                })}
+              >
+                {locale === "en" ? (slides[currentIndex].subtitleEn || slides[currentIndex].subtitle) : slides[currentIndex].subtitle}
+              </motion.p>
+            )}
 
+            {/* Button - only show if text exists */}
             {slides[currentIndex].buttonText && (
               <motion.div
                 variants={textVariants}
@@ -134,11 +164,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
                 <Button
                   as="a"
                   href={slides[currentIndex].buttonLink || "/productos"}
-                  color="primary"
-                  variant="shadow"
                   size="lg"
                   radius="full"
-                  className="shadow-xl font-bold px-10 text-white transition-transform hover:scale-105"
+                  className="px-10 text-white hover:scale-105 btn-gold-premium"
                   startContent={<ShoppingCart size={20} />}
                 >
                   {locale === "en" ? (slides[currentIndex].buttonTextEn || slides[currentIndex].buttonText) : slides[currentIndex].buttonText}

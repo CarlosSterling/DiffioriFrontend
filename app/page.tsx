@@ -6,13 +6,11 @@ import { Coffee, Award, Leaf, Truck, Heart } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { HeroSlider } from "@/components/HeroSlider";
 import { AboutSection } from "@/components/home/AboutSection";
-import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { StatsSection } from "@/components/home/StatsSection";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { GoogleReviewsSection } from "@/components/home/GoogleReviewsSection";
 import { CTABanner } from "@/components/home/CTABanner";
-import { googleReviews } from "@/data/google-reviews";
 import { CoffeeProduct } from "@/data/coffee-products";
-import { getProducts, API_URL, fetchHeroSlides, fetchHomeAbout, fetchHomeFeatures, fetchHomeCTA } from "@/lib/api";
+import { getFavoriteProducts, fetchHeroSlides, fetchHomeAbout, fetchHomeFeatures, fetchHomeCTA } from "@/lib/api";
 
 const ICON_MAP: Record<string, any> = {
   Coffee,
@@ -24,7 +22,7 @@ const ICON_MAP: Record<string, any> = {
 
 export default function Home() {
   const { dict, locale } = useLanguage();
-  const [products, setProducts] = useState<CoffeeProduct[]>([]);
+  const [favoriteProducts, setFavoriteProducts] = useState<CoffeeProduct[]>([]);
   const [heroSlides, setHeroSlides] = useState<any[]>([]);
   const [homeAbout, setHomeAbout] = useState<any>(null);
   const [homeFeatures, setHomeFeatures] = useState<any[]>([]);
@@ -36,43 +34,54 @@ export default function Home() {
       try {
         console.log("Home: Fetching simplified dynamic data...");
         const [
-          productsData, 
-          slidesData, 
-          aboutData, 
-          featuresData, 
+          favoritesData,
+          slidesData,
+          aboutData,
+          featuresData,
           ctaData
         ] = await Promise.all([
-          getProducts(),
+          getFavoriteProducts(),
           fetchHeroSlides(),
           fetchHomeAbout(),
           fetchHomeFeatures(),
           fetchHomeCTA(),
         ]);
-        
-        // --- Products ---
-        if (productsData && Array.isArray(productsData)) {
-          const mapped = productsData.map((p: any) => ({
-            id: p.slug || String(p.id),
-            name: p.name,
-            nameEn: p.name_en || p.name,
-            image: p.cover || "/placeholder-coffee.svg",
-            price: parseFloat(p.price),
-            shortDesc: p.short_desc,
-            shortDescEn: p.short_desc_en || p.short_desc,
-            description: p.description,
-            descriptionEn: p.description_en || p.description,
-            category: (p.category_slug || "specialty") as any,
-            variants: p.variants && p.variants.length > 0 
-              ? p.variants.map((v: any) => ({
-                  label: `${v.weight} ${v.grind}`,
-                  labelEn: `${v.weight} ${v.grind}`,
-                  price: parseFloat(v.price)
-                }))
-              : [
-                  { label: "Normal", labelEn: "Standard", price: parseFloat(p.price) }
-                ]
-          } as CoffeeProduct));
-          setProducts(mapped);
+
+        // --- Mapper helper ---
+        const mapProduct = (p: any): CoffeeProduct => ({
+          id: p.slug || String(p.id),
+          name: p.name,
+          nameEn: p.name_en || p.name,
+          image: p.cover || "/placeholder-coffee.svg",
+          price: parseFloat(p.price),
+          shortDesc: p.short_desc,
+          shortDescEn: p.short_desc_en || p.short_desc,
+          description: p.description,
+          descriptionEn: p.description_en || p.description,
+          category: p.category_slug || "specialty",
+          categoryName: p.category_name || p.category_slug || "specialty",
+          categoryEn: p.category_name_en || p.category_name || p.category_slug || "specialty",
+          variants: p.variants && p.variants.length > 0
+            ? p.variants.map((v: any) => ({
+              id: v.id,
+              label: `${v.weight} ${v.grind}`,
+              labelEn: `${v.weight_en || v.weight} ${v.grind_en || v.grind}`,
+              price: parseFloat(v.price)
+            }))
+            : [
+              { id: p.slug || String(p.id), label: "Normal", labelEn: "Standard", price: parseFloat(p.price) }
+            ],
+          gallery: (p.gallery || []).map((img: any) => ({
+            ...img,
+            altEn: img.alt_en || img.alt
+          }))
+        });
+
+
+
+        // --- Favorite Products ---
+        if (favoritesData && Array.isArray(favoritesData)) {
+          setFavoriteProducts(favoritesData.map(mapProduct));
         }
 
         // --- Hero Slides ---
@@ -96,11 +105,11 @@ export default function Home() {
         // --- Features ---
         if (featuresData && Array.isArray(featuresData)) {
           setHomeFeatures(featuresData.map((f: any) => ({
-            icon: ICON_MAP[f.icon] || Coffee,
-            title: f.title,
-            titleEn: f.title_en,
-            description: f.description,
-            descriptionEn: f.description_en,
+            icon: f.icon || "Coffee",
+            title: f.title || "",
+            titleEn: f.title_en || "",
+            description: f.description || "",
+            descriptionEn: f.description_en || "",
           })));
         }
 
@@ -120,23 +129,23 @@ export default function Home() {
   const finalHeroSlides = heroSlides.length > 0 ? heroSlides : [
     {
       id: 1,
-      image: "/slider-prep.png",
-      title: dict.hero.slides.prep.title,
-      subtitle: dict.hero.slides.prep.desc,
+      image: "",
+      title: "",
+      subtitle: "",
       buttonText: dict.hero.buyNow,
-      buttonLink: "/productos",
+      buttonLink: "/cafe",
     }
   ];
 
   return (
     <div className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 overflow-hidden px-5 pb-10">
       {/* ——— HERO ——— */}
-      <section className="relative h-[65vh] w-full flex flex-col items-center justify-center text-white overflow-hidden rounded-[2rem] shadow-2xl mt-4">
+      <section className="relative h-[40vh] md:h-[50vh] w-full flex flex-col items-center justify-center text-white overflow-hidden rounded-[2rem] shadow-2xl mt-1">
         <HeroSlider slides={finalHeroSlides} />
       </section>
 
       {/* ——— SOBRE NOSOTROS ——— */}
-      <AboutSection 
+      <AboutSection
         title={locale === "en" ? (homeAbout?.title_en || homeAbout?.title || dict.about.title) : (homeAbout?.title || dict.about.title)}
         description={locale === "en" ? (homeAbout?.description_en || homeAbout?.description || dict.about.description) : (homeAbout?.description || dict.about.description)}
         longDescription={locale === "en" ? (homeAbout?.long_description_en || homeAbout?.long_description || "") : (homeAbout?.long_description || "")}
@@ -144,34 +153,19 @@ export default function Home() {
         imageSrc={homeAbout?.image}
       />
 
-      {/* ——— POR QUÉ ELEGIRNOS ——— */}
-      <FeaturesSection 
-        title={locale === "en" ? "Why Choose Us" : "¿Por qué elegirnos?"}
-        features={homeFeatures.map(f => ({
-          ...f,
-          title: locale === "en" ? (f.titleEn || f.title) : f.title,
-          description: locale === "en" ? (f.descriptionEn || f.description) : f.description
-        }))}
-      />
+      {/* ——— ESTADÍSTICAS DE CONFIANZA ——— */}
+      <StatsSection features={homeFeatures} />
 
       {/* ——— PRODUCTOS DESTACADOS ——— */}
-      <FeaturedProducts 
+      <FeaturedProducts
         title={locale === "en" ? "Our Favorites" : "Nuestros Favoritos"}
-        subtitle={locale === "en" 
-          ? "Discover the flavors that our customers love the most." 
+        subtitle={locale === "en"
+          ? "Discover the flavors that our customers love the most."
           : "Descubre los sabores que más enamoran a nuestros clientes."}
-        products={products.slice(0, 3)}
+        products={favoriteProducts}
         isLoading={loading}
         ctaText={locale === "en" ? "View all products" : "Ver todos los productos"}
-      />
-
-      {/* ——— GOOGLE REVIEWS ——— */}
-      <GoogleReviewsSection
-        title={locale === "en" ? "What Our Clients Say" : "Lo que dicen nuestros clientes"}
-        subtitle={locale === "en" 
-          ? "Ratings and reviews from our Google profile." 
-          : "Calificaciones y opiniones de nuestro perfil de Google."}
-        reviews={googleReviews}
+        ctaLink="/productos"
       />
 
       {/* ——— CTA BANNER ——— */}
@@ -180,10 +174,9 @@ export default function Home() {
         subtitle={locale === "en" ? (homeCTA?.subtitle_en || homeCTA?.subtitle || "") : (homeCTA?.subtitle || "")}
         ctaText={locale === "en" ? (homeCTA?.cta_text_en || homeCTA?.cta_text || "") : (homeCTA?.cta_text || "")}
         ctaLink={homeCTA?.cta_link || "/#footer"}
-        backgroundImage={homeCTA?.background_image || "/coffee-farm-hero.png"}
+        backgroundImage={homeCTA?.background_image || ""}
       />
-      
+
     </div>
   );
 }
-

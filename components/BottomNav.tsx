@@ -10,7 +10,7 @@ import {
   ShoppingBag, 
   ShoppingCart,
   FileText,
-  Users,
+  Coffee,
   PenLine, 
   Send 
 } from "lucide-react";
@@ -38,14 +38,9 @@ export const BottomNav = () => {
       href: "/productos",
     },
     {
-      label: "Carta",
-      icon: FileText,
-      href: "/catalogo.pdf",
-    },
-    {
-      label: dict.nav.clientes,
-      icon: Users,
-      href: "/clients",
+      label: dict.nav.cafe,
+      icon: Coffee,
+      href: "/cafe",
     },
     {
       label: "Carrito",
@@ -54,12 +49,7 @@ export const BottomNav = () => {
       isCart: true,
     },
     {
-      label: dict.nav.blog,
-      icon: PenLine,
-      href: "/blog",
-    },
-    {
-      label: dict.nav.contactanos,
+      label: "Contacto",
       icon: Send,
       href: "/contact",
     },
@@ -86,10 +76,12 @@ export const BottomNav = () => {
                   {item.isCart && totalItems > 0 && (
                     <AnimatePresence>
                       <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0 }}
-                        className="absolute -top-1.5 -right-1.5 bg-primary-500 text-white text-[9px] font-bold rounded-full min-w-[14px] h-[14px] flex items-center justify-center px-1"
+                        key={`cart-count-${totalItems}`}
+                        initial={{ scale: 0, y: 5 }}
+                        animate={{ scale: 1, y: 0 }}
+                        exit={{ scale: 0, y: 5 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                        className="absolute -top-2 -right-2 bg-gradient-to-br from-[#F9E895] to-[#C5A059] text-[#1a1a1a] text-[10px] font-black rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-lg shadow-gold/20 border border-white/40 backdrop-blur-sm z-20"
                       >
                         {totalItems}
                       </motion.span>

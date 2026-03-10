@@ -12,8 +12,14 @@ import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import {
+  CreditCardIcon,
+  ShieldCheckIcon,
+  LockIcon,
+  ArrowLeftIcon,
+} from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -21,127 +27,130 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import CartIcon from "@/components/CartIcon";
 import { useScrolled } from "@/components/useScrolled";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { Logo } from "@/components/Logo";
+import { useState, useEffect } from "react";
 
 /* Map siteConfig keys → dict keys */
 const navLabelKey: Record<string, keyof typeof import("@/i18n/es").default.nav> = {
   "/": "inicio",
   "/productos": "productos",
   "/catalogo.pdf": "carta",
-  "/clients": "clientes",
+  "/cafe": "cafe",
   "/blog": "blog",
   "/contact": "contactanos",
 };
-
 export const Navbar = () => {
   const pathname = usePathname();
   const scrolled = useScrolled();
-  const { dict } = useLanguage();
+  const { dict, locale } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [isNavbarHovered, setIsNavbarHovered] = useState(false);
+
+  const isCheckout = pathname === "/checkout";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <HNavbar
-      position="sticky"
-      className={clsx(
-        "transition-all duration-500 top-2 sm:top-4 inset-x-2 sm:inset-x-4 xl:inset-x-12 mx-auto h-auto min-h-[60px] sm:min-h-[80px] xl:min-h-[100px] z-50 rounded-2xl sm:rounded-3xl xl:rounded-full border border-white/20 py-1 sm:py-2 items-center px-2 sm:px-4 xl:px-6 mb-4 sm:mb-5",
-        scrolled 
-          ? "bg-white/70 dark:bg-black/70 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] scale-[0.98]" 
-          : "bg-white/40 dark:bg-black/40 backdrop-blur-2xl shadow-xl",
-      )}
-      maxWidth="full"
-    >
+    <>
+      <HNavbar
+        position="sticky"
+        onMouseEnter={() => setIsNavbarHovered(true)}
+        onMouseLeave={() => setIsNavbarHovered(false)}
+        className={clsx(
+          "bg-white/30 dark:bg-black/20 transition-all duration-700 top-2 sm:top-4 inset-x-2 sm:inset-x-4 xl:inset-x-12 mx-auto h-auto z-50 rounded-2xl sm:rounded-3xl xl:rounded-full border items-center px-2 sm:px-4 xl:px-8 mb-1 overflow-hidden shadow-mocha-premium",
+          scrolled ? "min-h-[50px] sm:min-h-[65px] xl:min-h-[75px] scale-[0.99]" : "min-h-[70px] sm:min-h-[90px] xl:min-h-[110px]",
+          isNavbarHovered ? "backdrop-blur-[40px] bg-white/40 dark:bg-black/30" : "backdrop-blur-[24px]",
+          isCheckout 
+            ? "border-primary/60 dark:border-primary/40 ring-4 ring-primary/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]" 
+            : "border-white/15 dark:border-white/10 dark:border-light-glow"
+        )}
+        maxWidth="full"
+      >
+      {/* Pattern Texture Overlay */}
+      <div className="absolute inset-0 bg-trama-diffiori opacity-[0.05] dark:opacity-[0.03] pointer-events-none" />
       {/* ——— Brand (Left) ——— */}
-      <NavbarBrand as="li" className="gap-2 sm:gap-4 max-w-fit h-full flex items-center pr-2 sm:pr-4 xl:pr-8 pl-2 sm:pl-4 xl:pl-6 justify-start flex-shrink-0">
-        <NextLink href="/" className="flex flex-col items-center justify-center h-full">
-          {/* Logo con máscara para tomar el color primary */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-auto relative flex items-center justify-center h-[65px] sm:h-[110px] xl:h-[140px]"
-          >
-            <div 
-              className="bg-primary w-[180px] sm:w-[260px] xl:w-[320px] h-full"
-              style={{
-                maskImage: 'url("/logoDiffiori.png")',
-                maskSize: 'contain',
-                maskRepeat: 'no-repeat',
-                maskPosition: 'center',
-                WebkitMaskImage: 'url("/logoDiffiori.png")',
-                WebkitMaskSize: 'contain',
-                WebkitMaskRepeat: 'no-repeat',
-                WebkitMaskPosition: 'center',
-              }}
-            />
-          </motion.div>
+      <NavbarBrand as="li" className="flex-1 justify-start h-full">
+        <NextLink href="/" className="flex items-center">
+          <Logo scrolled={scrolled} className={scrolled ? "ml-3" : "ml-0"} />
         </NextLink>
       </NavbarBrand>
 
       {/* ——— Desktop nav (Centered) ——— */}
-      <NavbarContent className="hidden xl:flex gap-4 2xl:gap-6" justify="center">
+      <NavbarContent className="hidden xl:flex gap-8 2xl:gap-12" justify="center">
         {siteConfig.navItems.map((item) => {
           const isExternal = item.href.endsWith(".pdf");
           const active = !isExternal && pathname === item.href;
           const key = navLabelKey[item.href] ?? "inicio";
+          const isFaded = hoveredKey !== null && hoveredKey !== item.href;
 
-          /* External PDF link → <a> with target _blank */
-          if (isExternal) {
-            return (
-              <NavbarItem key={item.href}>
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative px-2 2xl:px-4 py-2 rounded-xl text-sm xl:text-base 2xl:text-lg font-semibold tracking-wide font-display text-foreground/70 hover:text-primary hover:bg-primary-100/30 hover:scale-105 active:scale-95 transition-all duration-300"
-                >
-                  {dict.nav[key]}
-                </a>
-              </NavbarItem>
-            );
-          }
+          const commonProps = {
+            onMouseEnter: () => setHoveredKey(item.href),
+            onMouseLeave: () => setHoveredKey(null),
+            className: clsx(
+              "relative px-3 py-2 text-base xl:text-lg 2xl:text-xl font-montserrat font-bold tracking-[0.2em] transition-all duration-400 inline-block uppercase group",
+              active ? "text-gold" : "text-default-700 dark:text-white/80 hover:text-primary dark:hover:text-white",
+              isFaded ? "opacity-30 scale-95" : "opacity-100 scale-100"
+            )
+          };
+
+          const content = (
+            <>
+              {dict.nav[key]}
+              {/* Hover expanding line */}
+              <span className="absolute bottom-1.5 left-1/2 w-0 h-[1.5px] bg-gold -translate-x-1/2 group-hover:w-full transition-all duration-500 opacity-60" />
+              {active && (
+                <motion.div
+                  layoutId="nav-active-dot"
+                  className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gold rounded-full shadow-[0_0_12px_rgba(197,160,89,1)]"
+                />
+              )}
+            </>
+          );
 
           return (
             <NavbarItem key={item.href}>
-              <NextLink
-                href={item.href}
-                className={clsx(
-                  "relative px-2 2xl:px-4 py-2 rounded-xl text-sm xl:text-base 2xl:text-lg font-semibold tracking-wide font-display transition-all duration-300 inline-block",
-                  active
-                    ? "text-primary font-bold"
-                    : "text-foreground/70 hover:text-primary hover:bg-primary-100/30 hover:scale-105 active:scale-95",
-                )}
-              >
-                {dict.nav[key]}
-              </NextLink>
+              {isExternal ? (
+                <a href={item.href} target="_blank" rel="noopener noreferrer" {...commonProps}>
+                  {content}
+                </a>
+              ) : (
+                <NextLink href={item.href} {...commonProps}>
+                  {content}
+                </NextLink>
+              )}
             </NavbarItem>
           );
         })}
       </NavbarContent>
 
       {/* ——— Right actions (unified for all breakpoints) ——— */}
-      <NavbarContent justify="end" className="gap-2 sm:gap-3 items-center flex-shrink-0">
-        <div className="hidden xl:flex items-center gap-2 bg-default-100/50 p-1 rounded-full backdrop-blur-sm">
+      <NavbarContent justify="end" className="flex-1 gap-2 sm:gap-4 items-center">
+        <div className="hidden xl:flex items-center gap-1 bg-black/5 dark:bg-white/10 p-1.5 rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10">
           <LanguageToggle />
           <ThemeSwitch />
         </div>
-        <div className="hidden xl:block">
-          <CartIcon />
+
+        <div className={clsx("hidden xl:block")}>
+          <CartIcon className="text-default-700 dark:text-white/80 hover:text-gold transition-colors" />
         </div>
 
         {/* Mobile controls (just theme/lang if we want, or keep it simple) */}
-        <div className="xl:hidden flex items-center gap-2 bg-default-100/50 p-1 rounded-full backdrop-blur-sm">
+        <div className="xl:hidden flex items-center gap-1 bg-black/5 dark:bg-white/10 p-1 rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10">
           <LanguageToggle />
           <ThemeSwitch />
         </div>
 
         {/* CTA — desktop only */}
         <NavbarItem className="hidden xl:flex">
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               as={Link}
               href="/contact"
-              color="primary"
-              variant="shadow"
-              radius="full"
-              className="px-5 font-bold shadow-xl shadow-primary/20 transition-all duration-300 whitespace-nowrap"
+              variant="flat"
+              className="px-6 font-montserrat font-bold tracking-[0.2em] uppercase whitespace-nowrap btn-gold-premium"
             >
               {dict.nav.cotizar}
             </Button>
@@ -153,5 +162,6 @@ export const Navbar = () => {
 
       {/* Mobile menu removed since we have BottomNav now */}
     </HNavbar>
+    </>
   );
 };
