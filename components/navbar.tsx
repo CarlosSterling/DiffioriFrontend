@@ -72,14 +72,14 @@ export const Navbar = () => {
       {/* Pattern Texture Overlay */}
       <div className="absolute inset-0 bg-trama-diffiori opacity-[0.05] dark:opacity-[0.03] pointer-events-none" />
       {/* ——— Brand (Left) ——— */}
-      <NavbarBrand as="li" className="flex-1 justify-start h-full">
+      <NavbarBrand as="li" className="flex-1 justify-start h-full shrink-0 min-w-[100px] xl:min-w-[150px]">
         <NextLink href="/" className="flex items-center">
-          <Logo scrolled={scrolled} className={scrolled ? "ml-3" : "ml-0"} />
+          <Logo scrolled={scrolled} className={scrolled ? "ml-[clamp(4px,1vw,12px)]" : "ml-0"} />
         </NextLink>
       </NavbarBrand>
 
       {/* ——— Desktop nav (Centered) ——— */}
-      <NavbarContent className="hidden xl:flex gap-6 2xl:gap-10" justify="center">
+      <NavbarContent className="hidden lg:flex justify-center flex-auto w-full gap-[clamp(6px,1.2vw,32px)]" justify="center">
         {siteConfig.navItems.map((item) => {
           const isExternal = item.href.endsWith(".pdf");
           const active = !isExternal && pathname === item.href;
@@ -90,7 +90,7 @@ export const Navbar = () => {
             onMouseEnter: () => setHoveredKey(item.href),
             onMouseLeave: () => setHoveredKey(null),
             className: clsx(
-              "relative px-2 py-2 text-base xl:text-[18px] 2xl:text-[22px] font-montserrat font-bold tracking-[0.05em] transition-all duration-400 inline-block uppercase group",
+              "relative px-[clamp(2px,0.5vw,8px)] py-[clamp(4px,0.5vw,8px)] text-[clamp(9px,1.05vw,16px)] 2xl:text-[18px] font-montserrat font-bold tracking-[clamp(0.02em,0.06vw,0.08em)] transition-all duration-400 inline-block uppercase group whitespace-nowrap",
               active ? "text-gold" : "text-default-700 dark:text-white/80 hover:text-primary dark:hover:text-white",
               isFaded ? "opacity-30 scale-95" : "opacity-100 scale-100"
             )
@@ -127,30 +127,30 @@ export const Navbar = () => {
       </NavbarContent>
 
       {/* ——— Right actions (unified for all breakpoints) ——— */}
-      <NavbarContent justify="end" className="flex-1 gap-2 sm:gap-4 items-center">
-        <div className="hidden xl:flex items-center gap-1 bg-black/5 dark:bg-white/10 p-1.5 rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10">
+      <NavbarContent justify="end" className="flex-1 gap-[clamp(4px,1vw,20px)] items-center shrink-0">
+        <div className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/10 p-[clamp(2px,0.3vw,6px)] rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10 scale-90 xl:scale-100 origin-right transition-transform">
           <LanguageToggle />
           <ThemeSwitch />
         </div>
 
-        <div className={clsx("hidden xl:block")}>
+        <div className={clsx("hidden lg:block scale-90 xl:scale-100 origin-right transition-transform")}>
           <CartIcon className="text-default-700 dark:text-white/80 hover:text-gold transition-colors" />
         </div>
 
         {/* Mobile controls (just theme/lang if we want, or keep it simple) */}
-        <div className="xl:hidden flex items-center gap-1 bg-black/5 dark:bg-white/10 p-1 rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10">
+        <div className="lg:hidden flex items-center gap-1 bg-black/5 dark:bg-white/10 p-1 rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10">
           <LanguageToggle />
           <ThemeSwitch />
         </div>
 
         {/* CTA — desktop only */}
-        <NavbarItem className="hidden xl:flex">
+        <NavbarItem className="hidden lg:flex">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               as={Link}
               href="/contact"
               variant="flat"
-              className="px-6 font-montserrat font-bold tracking-[0.2em] uppercase whitespace-nowrap btn-gold-premium"
+              className="px-[clamp(12px,1.5vw,24px)] h-[clamp(32px,2.5vw,40px)] font-montserrat font-bold tracking-[clamp(0.08em,0.15vw,0.2em)] uppercase whitespace-nowrap btn-gold-premium text-[clamp(10px,0.9vw,14px)]"
             >
               {dict.nav.cotizar}
             </Button>
