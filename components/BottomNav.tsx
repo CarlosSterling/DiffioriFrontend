@@ -57,7 +57,7 @@ export const BottomNav = () => {
 
   return (
     <>
-      <nav className="xl:hidden fixed bottom-0 inset-x-0 z-[60] bg-background/80 backdrop-blur-lg border-t border-default-200 pb-safe-area-inset-bottom">
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-[60] bg-background/80 backdrop-blur-lg border-t border-default-200 pb-safe-area-inset-bottom">
         <div className="flex items-center justify-around h-16 px-1">
           {navItems.map((item) => {
             const isActive = item.href === pathname;

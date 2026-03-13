@@ -127,7 +127,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       {/* ——— Right actions (unified for all breakpoints) ——— */}
-      <NavbarContent justify="end" className="flex-1 gap-[clamp(4px,1vw,20px)] items-center shrink-0">
+      <NavbarContent justify="end" className="flex-1 gap-[clamp(4px,1vw,20px)] items-center shrink-0 lg:pr-[clamp(4px,2vw,24px)]">
         <div className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/10 p-[clamp(2px,0.3vw,6px)] rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10 scale-90 xl:scale-100 origin-right transition-transform">
           <LanguageToggle />
           <ThemeSwitch />
@@ -161,7 +161,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       {/* Mobile menu removed since we have BottomNav now */}
-    </HNavbar>
+      </HNavbar>
     </>
   );
 };

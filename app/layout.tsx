@@ -83,7 +83,7 @@ export default function RootLayout({
           fontMontserrat.variable
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <ScrollProgressBar />
           <BackgroundPatterns />
           {/* ─── Header fijo ─── */}
