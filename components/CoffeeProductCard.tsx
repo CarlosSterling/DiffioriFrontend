@@ -83,7 +83,7 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
       <Card 
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="w-full max-w-[500px] h-auto min-h-[750px] md:h-[840px] border border-white/40 dark:border-white/5 bg-white/80 dark:bg-black/60 backdrop-blur-2xl overflow-hidden group transition-all duration-700 relative flex flex-col"
+        className="w-full max-w-[500px] h-auto min-h-[580px] xs:min-h-[650px] sm:min-h-[750px] md:h-[840px] border border-white/40 dark:border-white/5 bg-white/80 dark:bg-black/60 backdrop-blur-2xl overflow-hidden group transition-all duration-700 relative flex flex-col"
         style={{
           transform: hovered ? "translateY(-10px)" : "translateY(0)",
           transition: "all 800ms cubic-bezier(0.23, 1, 0.32, 1)",
@@ -124,7 +124,7 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
 
         {/* Image */}
         <div
-          className="relative h-[250px] sm:h-[300px] md:h-[380px] w-full overflow-hidden flex items-center justify-center bg-transparent cursor-pointer group/img shrink-0"
+          className="relative h-[180px] xs:h-[220px] sm:h-[300px] md:h-[380px] w-full overflow-hidden flex items-center justify-center bg-transparent cursor-pointer group/img shrink-0"
           onClick={onOpen}
         >
           {/* Jewel Glow Background / Aura */}
@@ -146,7 +146,7 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
               transform: hovered ? "scale(1.07) translateY(-4px)" : "scale(1) translateY(0)",
               transition: "transform 800ms cubic-bezier(0.23, 1, 0.32, 1)",
             }}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain p-4"
             fallbackSrc="/placeholder-coffee.svg"
           />
           {/* Gallery Overlay */}
@@ -252,14 +252,14 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
           </div>
         </CardBody>
 
-        <CardFooter className="px-5 pb-6 pt-2 flex flex-col gap-3 shrink-0">
+        <CardFooter className="px-4 xs:px-5 pb-5 xs:pb-6 pt-2 flex flex-col gap-2 xs:gap-3 shrink-0">
           <Button
             fullWidth
             size="lg"
             radius="lg"
-            className={clsx("font-bold h-14 text-sm", !justAdded && "btn-gold-premium")}
+            className={clsx("font-bold h-11 xs:h-14 text-sm", !justAdded && "btn-gold-premium")}
             style={justAdded ? { backgroundColor: "#E8D4B0", color: "#4A3728" } : {}}
-            startContent={justAdded ? <CheckIcon size={20} /> : <ShoppingCartIcon size={20} />}
+            startContent={justAdded ? <CheckIcon size={18} /> : <ShoppingCartIcon size={18} />}
             onPress={handleAdd}
           >
             {justAdded ? dict.cafe.added : dict.cafe.addToCart}
@@ -269,8 +269,8 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
             size="md"
             radius="lg"
             variant="flat"
-            className="font-bold h-11 text-xs bg-primary/10 text-[#4A3728] dark:text-gold-light border border-primary/20 hover:bg-primary/20 transition-all"
-            startContent={<ZapIcon size={16} />}
+            className="font-bold h-9 xs:h-11 text-[11px] bg-primary/10 text-[#4A3728] dark:text-gold-light border border-primary/20 hover:bg-primary/20 transition-all"
+            startContent={<ZapIcon size={14} />}
             onPress={handleBuyNow}
           >
             {dict.cafe.buyNow}

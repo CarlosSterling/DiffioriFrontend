@@ -60,13 +60,16 @@ export const Navbar = () => {
         onMouseEnter={() => setIsNavbarHovered(true)}
         onMouseLeave={() => setIsNavbarHovered(false)}
         className={clsx(
-          "bg-white/30 dark:bg-black/20 transition-all duration-700 top-2 sm:top-4 inset-x-2 sm:inset-x-4 xl:inset-x-12 mx-auto z-50 rounded-2xl sm:rounded-3xl xl:rounded-full border items-center px-2 sm:px-4 xl:px-8 mb-1 shadow-mocha-premium",
+          "bg-white/30 dark:bg-black/20 transition-all duration-700 top-2 sm:top-4 inset-x-2 sm:inset-x-4 xl:inset-x-12 mx-auto z-50 rounded-2xl sm:rounded-3xl xl:rounded-full border items-center mb-1 shadow-mocha-premium",
           scrolled ? "h-[50px] sm:h-[65px] xl:h-[75px] scale-[0.99]" : "h-[75px] sm:h-[95px] xl:h-[115px]",
           isNavbarHovered ? "backdrop-blur-[40px] bg-white/40 dark:bg-black/30" : "backdrop-blur-[24px]",
           isCheckout 
             ? "border-primary/60 dark:border-primary/40 ring-4 ring-primary/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]" 
             : "border-white/15 dark:border-white/10 dark:border-light-glow"
         )}
+        classNames={{
+          wrapper: "w-full max-w-full px-[clamp(16px,3vw,40px)] justify-between",
+        }}
         maxWidth="full"
       >
       {/* Pattern Texture Overlay */}
@@ -74,7 +77,7 @@ export const Navbar = () => {
       {/* ——— Brand (Left) ——— */}
       <NavbarBrand as="li" className="flex-1 justify-start h-full shrink-0 min-w-[100px] xl:min-w-[150px]">
         <NextLink href="/" className="flex items-center">
-          <Logo scrolled={scrolled} className={scrolled ? "ml-[clamp(4px,1vw,12px)]" : "ml-0"} />
+          <Logo scrolled={scrolled} className="ml-0" />
         </NextLink>
       </NavbarBrand>
 
@@ -127,7 +130,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       {/* ——— Right actions (unified for all breakpoints) ——— */}
-      <NavbarContent justify="end" className="flex-1 gap-[clamp(4px,1vw,20px)] items-center shrink-0 lg:pr-[clamp(4px,2vw,24px)]">
+      <NavbarContent justify="end" className="flex-1 gap-[clamp(4px,1vw,20px)] items-center shrink-0">
         <div className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/10 p-[clamp(2px,0.3vw,6px)] rounded-full backdrop-blur-sm border border-black/5 dark:border-white/10 scale-90 xl:scale-100 origin-right transition-transform">
           <LanguageToggle />
           <ThemeSwitch />

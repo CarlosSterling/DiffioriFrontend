@@ -43,8 +43,9 @@ export const FeaturedProducts = ({
     setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
     setOverflows(el.scrollWidth > el.clientWidth + 10);
 
-    // Calculate active index based on scroll position
-    const cardWidth = 432; // 400px card + 32px gap
+    // Calculate active index based on scroll position - using dynamic width
+    const cardElement = el.querySelector('[data-product-card]');
+    const cardWidth = cardElement ? cardElement.clientWidth + 32 : 312; // 32 is the gap (gap-8 is 2rem = 32px)
     const index = Math.round(el.scrollLeft / cardWidth);
     setActiveIndex(Math.min(index, products.length - 1));
 
@@ -92,7 +93,8 @@ export const FeaturedProducts = ({
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    const cardWidth = 432;
+    const cardElement = el.querySelector('[data-product-card]');
+    const cardWidth = cardElement ? cardElement.clientWidth + 32 : 312;
     const amount = direction === "left" ? -cardWidth : cardWidth;
     el.scrollBy({ left: amount, behavior: "smooth" });
   };
@@ -100,14 +102,15 @@ export const FeaturedProducts = ({
   const scrollToIndex = (index: number) => {
     const el = scrollRef.current;
     if (!el) return;
-    const cardWidth = 432;
+    const cardElement = el.querySelector('[data-product-card]');
+    const cardWidth = cardElement ? cardElement.clientWidth + 32 : 312;
     el.scrollTo({ left: index * cardWidth, behavior: "smooth" });
   };
 
   const totalDots = Math.max(products.length - totalVisible + 1, 1);
 
   return (
-    <section className="py-16 px-6 bg-background relative overflow-hidden">
+    <section className="py-16 px-2 xs:px-4 sm:px-6 bg-background relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-50/30 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-50/20 rounded-full blur-3xl -z-10 -translate-x-1/3 translate-y-1/3" />
@@ -215,7 +218,8 @@ export const FeaturedProducts = ({
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.5, delay: index * 0.08 }}
-                    className="flex-none w-[400px] snap-start"
+                    className="flex-none w-[280px] xs:w-[320px] sm:w-[360px] md:w-[400px] snap-center md:snap-start"
+                    data-product-card
                   >
                     <CoffeeProductCard product={product} />
                   </motion.div>
