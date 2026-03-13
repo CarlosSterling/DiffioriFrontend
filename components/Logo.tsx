@@ -11,7 +11,7 @@ export const Logo = ({ scrolled, className }: LogoProps) => {
     <div
       className={clsx(
         "relative flex items-center transition-all duration-500",
-        scrolled ? "h-[52px]" : "h-[85px] sm:h-[135px]",
+        scrolled ? "h-[45px] sm:h-[55px]" : "h-[100px] sm:h-[150px] xl:h-[170px]",
         className
       )}
     >
@@ -29,9 +29,9 @@ export const Logo = ({ scrolled, className }: LogoProps) => {
           alt="Diffiori Café"
           className={clsx(
             "h-full w-auto object-contain transition-all duration-500",
-            "brightness-105 contrast-[1.1] saturate-[1.1] dark:brightness-125",
-            /* Stronger black shadow for maximum white text pop on light backgrounds */
-            "[filter:drop-shadow(0_2px_20px_rgba(0,0,0,0.6))_drop-shadow(0_0_5px_rgba(0,0,0,0.7))]",
+            "brightness-105 contrast-125 saturate-[1.1] dark:brightness-125",
+            /* Cross-browser safe filter: defined 1px shadow for text + soft 12px halo */
+            "[filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.15))_drop-shadow(0_0_12px_rgba(255,255,255,0.8))]",
             "dark:drop-shadow-none"
           )}
         />

@@ -40,8 +40,8 @@ export default function ProductCard({ product }: { product: Product }) {
           borderRadius: "14px",
         }}
       >
-      <Card radius="lg" isFooterBlurred className="border-none overflow-hidden">
-        <div className="h-64 w-full overflow-hidden">
+      <Card radius="lg" isFooterBlurred className="border-none overflow-hidden h-auto min-h-[480px] md:h-[520px]">
+        <div className="h-48 sm:h-56 md:h-64 w-full overflow-hidden">
           <Image
             src={coverSrc}
             alt={name}
@@ -55,10 +55,10 @@ export default function ProductCard({ product }: { product: Product }) {
           />
         </div>
 
-        <div className="p-4 py-3 flex flex-col gap-1.5">
-          <h3 className="text-foreground font-bold text-lg truncate leading-tight">{name}</h3>
+        <div className="p-4 py-3 flex flex-col gap-1.5 flex-grow">
+          <h3 className="text-foreground font-bold text-lg h-[3rem] flex items-center line-clamp-2 leading-tight">{name}</h3>
           
-          <p className="text-default-500 text-xs line-clamp-2">
+          <p className="text-default-500 text-xs line-clamp-3 h-[3.5rem] flex items-center overflow-hidden">
             {shortDesc || (description ? 
               (description.length > 100 ? description.substring(0, 97) + "..." : description) 
               : "")}

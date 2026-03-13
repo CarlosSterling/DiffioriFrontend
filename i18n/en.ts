@@ -5,9 +5,9 @@ const en: LocaleDict = {
   /* ── Nav ── */
   nav: {
     inicio: "Home",
-    productos: "Shop",
+    productos: "Pitalito Shop",
     carta: "Our Menu",
-    cafe: "Coffee",
+    cafe: "COFFEE BOUTIQUE",
     clientes: "Clients",
     blog: "Blog",
     contactanos: "Contact us",

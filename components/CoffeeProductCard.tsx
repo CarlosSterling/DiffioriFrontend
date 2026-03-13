@@ -83,7 +83,7 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
       <Card 
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="w-full max-w-[500px] h-[780px] border border-white/40 dark:border-white/5 bg-white/80 dark:bg-black/60 backdrop-blur-2xl overflow-hidden group transition-all duration-700 relative flex flex-col"
+        className="w-full max-w-[500px] h-auto min-h-[750px] md:h-[840px] border border-white/40 dark:border-white/5 bg-white/80 dark:bg-black/60 backdrop-blur-2xl overflow-hidden group transition-all duration-700 relative flex flex-col"
         style={{
           transform: hovered ? "translateY(-10px)" : "translateY(0)",
           transition: "all 800ms cubic-bezier(0.23, 1, 0.32, 1)",
@@ -124,7 +124,7 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
 
         {/* Image */}
         <div
-          className="relative h-[380px] w-full overflow-hidden flex items-center justify-center bg-transparent cursor-pointer group/img shrink-0"
+          className="relative h-[250px] sm:h-[300px] md:h-[380px] w-full overflow-hidden flex items-center justify-center bg-transparent cursor-pointer group/img shrink-0"
           onClick={onOpen}
         >
           {/* Jewel Glow Background / Aura */}
@@ -146,7 +146,7 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
               transform: hovered ? "scale(1.07) translateY(-4px)" : "scale(1) translateY(0)",
               transition: "transform 800ms cubic-bezier(0.23, 1, 0.32, 1)",
             }}
-            className="h-full w-full object-contain"
+            className="h-full w-full object-cover"
             fallbackSrc="/placeholder-coffee.svg"
           />
           {/* Gallery Overlay */}
@@ -167,17 +167,17 @@ export default function CoffeeProductCard({ product }: { product: CoffeeProduct 
         </div>
 
         <CardBody className="px-6 py-4 flex-grow flex flex-col justify-between overflow-hidden">
-          <div className="space-y-1 text-center">
-            <h3 className="font-black text-2xl leading-tight h-[4rem] flex items-center justify-center font-montserrat uppercase tracking-widest text-[#4A3728] dark:text-primary-100 overflow-hidden line-clamp-2">
+          <div className="space-y-1 md:space-y-2 text-center">
+            <h3 className="font-black text-xl md:text-2xl leading-tight h-[4rem] md:h-[4.5rem] flex items-center justify-center font-montserrat uppercase tracking-widest text-[#4A3728] dark:text-primary-100 overflow-hidden line-clamp-2 px-2">
               {name}
             </h3>
-            <p className="text-default-600 dark:text-default-400 text-base line-clamp-2 h-[3rem] flex items-center justify-center font-normal leading-relaxed overflow-hidden">
+            <p className="text-default-600 dark:text-default-400 text-xs md:text-sm line-clamp-3 h-[3.5rem] md:h-[4rem] flex items-center justify-center font-normal leading-relaxed overflow-hidden px-1">
               {shortDesc}
             </p>
           </div>
 
           {/* Prices & Variant Row */}
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-end justify-between gap-6 lg:gap-2 mt-4 pt-4 border-t border-default-100/50">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-end justify-between gap-4 lg:gap-2 mt-2 md:mt-4 pt-3 md:pt-4 border-t border-default-100/50">
             <div className="flex flex-col items-start min-w-0">
               <span className="text-[10px] uppercase tracking-[0.2em] text-default-400 font-extrabold mb-1 whitespace-nowrap">
                 {dict.productos.price}

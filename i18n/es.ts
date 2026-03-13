@@ -135,9 +135,9 @@ const es: LocaleDict = {
   /* ── Nav ── */
   nav: {
     inicio: "Inicio",
-    productos: "Tienda",
+    productos: "Tienda Pitalito",
     carta: "Nuestra Carta",
-    cafe: "Café",
+    cafe: "BOUTIQUE DE CAFÉ",
     clientes: "Clientes",
     blog: "Blog",
     contactanos: "Contáctanos",

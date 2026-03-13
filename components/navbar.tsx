@@ -60,8 +60,8 @@ export const Navbar = () => {
         onMouseEnter={() => setIsNavbarHovered(true)}
         onMouseLeave={() => setIsNavbarHovered(false)}
         className={clsx(
-          "bg-white/30 dark:bg-black/20 transition-all duration-700 top-2 sm:top-4 inset-x-2 sm:inset-x-4 xl:inset-x-12 mx-auto h-auto z-50 rounded-2xl sm:rounded-3xl xl:rounded-full border items-center px-2 sm:px-4 xl:px-8 mb-1 overflow-hidden shadow-mocha-premium",
-          scrolled ? "min-h-[50px] sm:min-h-[65px] xl:min-h-[75px] scale-[0.99]" : "min-h-[70px] sm:min-h-[90px] xl:min-h-[110px]",
+          "bg-white/30 dark:bg-black/20 transition-all duration-700 top-2 sm:top-4 inset-x-2 sm:inset-x-4 xl:inset-x-12 mx-auto z-50 rounded-2xl sm:rounded-3xl xl:rounded-full border items-center px-2 sm:px-4 xl:px-8 mb-1 shadow-mocha-premium",
+          scrolled ? "h-[50px] sm:h-[65px] xl:h-[75px] scale-[0.99]" : "h-[75px] sm:h-[95px] xl:h-[115px]",
           isNavbarHovered ? "backdrop-blur-[40px] bg-white/40 dark:bg-black/30" : "backdrop-blur-[24px]",
           isCheckout 
             ? "border-primary/60 dark:border-primary/40 ring-4 ring-primary/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]" 
@@ -79,7 +79,7 @@ export const Navbar = () => {
       </NavbarBrand>
 
       {/* ——— Desktop nav (Centered) ——— */}
-      <NavbarContent className="hidden xl:flex gap-8 2xl:gap-12" justify="center">
+      <NavbarContent className="hidden xl:flex gap-6 2xl:gap-10" justify="center">
         {siteConfig.navItems.map((item) => {
           const isExternal = item.href.endsWith(".pdf");
           const active = !isExternal && pathname === item.href;
@@ -90,7 +90,7 @@ export const Navbar = () => {
             onMouseEnter: () => setHoveredKey(item.href),
             onMouseLeave: () => setHoveredKey(null),
             className: clsx(
-              "relative px-3 py-2 text-base xl:text-lg 2xl:text-xl font-montserrat font-bold tracking-[0.2em] transition-all duration-400 inline-block uppercase group",
+              "relative px-2 py-2 text-base xl:text-[18px] 2xl:text-[22px] font-montserrat font-bold tracking-[0.05em] transition-all duration-400 inline-block uppercase group",
               active ? "text-gold" : "text-default-700 dark:text-white/80 hover:text-primary dark:hover:text-white",
               isFaded ? "opacity-30 scale-95" : "opacity-100 scale-100"
             )
