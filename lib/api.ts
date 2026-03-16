@@ -123,6 +123,12 @@ export async function fetchHomeCTA() {
   }
 }
 
+export async function getOrderStatus(orderId: string | number) {
+  const res = await fetch(`${API_URL}/orders/${orderId}/status/`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to fetch order status: ${res.status}`);
+  return res.json();
+}
+
 export async function checkout(payload: any) {
   try {
     const res = await fetch(`${API_URL}/orders/checkout/`, {
@@ -133,12 +139,27 @@ export async function checkout(payload: any) {
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(JSON.stringify(errorData) || "Checkout failed");
+      let errorMsg = "Checkout failed";
+      try {
+        const errorData = await res.json();
+        errorMsg = JSON.stringify(errorData);
+      } catch {
+        errorMsg = await res.text().catch(() => `HTTP ${res.status}`);
+      }
+      throw new Error(errorMsg);
     }
     return res.json();
   } catch (error) {
     console.error("Checkout error:", error);
     throw error;
   }
+}
+
+export async function verifyPayment(orderId: string | number, wompiTransactionId: string) {
+  const res = await fetch(`${API_URL}/orders/verify-payment/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ order_id: orderId, wompi_transaction_id: wompiTransactionId }),
+  });
+  return res.json();
 }

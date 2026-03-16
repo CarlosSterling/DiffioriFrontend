@@ -16,14 +16,9 @@ import {
 import Link from "next/link";
 import NextLink from "next/link";
 import {
-  BuildingIcon,
-  CheckCircle2Icon,
   ArrowLeftIcon,
   Trash2Icon,
   ShoppingBagIcon,
-  SendIcon,
-  XCircleIcon,
-  RefreshCcwIcon,
 } from "lucide-react";
 import { CinematicHeader } from "@/components/CinematicHeader";
 import { useCart } from "@/context/CartContext";
@@ -32,10 +27,8 @@ import { Country, State, City } from "country-state-city";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { checkout } from "@/lib/api";
-import { WhatsAppIcon } from "@/components/icons";
 
 type DeliveryMethod = "shipping" | "pickup";
-type PaymentMethod = "pse";
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart, removeFromCart } = useCart();
@@ -43,11 +36,7 @@ export default function CheckoutPage() {
   const t = dict.checkout;
 
   const [delivery, setDelivery] = useState<DeliveryMethod>("shipping");
-  const [payment] = useState<PaymentMethod>("pse");
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [orderResult, setOrderResult] = useState<any>(null);
-  const [orderItemsSnapshot, setOrderItemsSnapshot] = useState<any[]>([]);
 
   // States para errores de validación
   const [emailError, setEmailError] = useState("");
@@ -116,12 +105,9 @@ export default function CheckoutPage() {
           return;
       }
 
-      const fullAddress = delivery === "pickup" 
+      const fullAddress = delivery === "pickup"
         ? "Recogida en tienda (Pitalito)"
         : `${address}, ${cityName}, ${stateCode}, ${countryCode}`;
-
-      // Lógica de simulación dinámica
-      const isManualFailure = email.includes("fallo") || email.includes("failed");
 
       const payload = {
         contact_name: customerName,
@@ -132,21 +118,15 @@ export default function CheckoutPage() {
           variant_id: item.variantId,
           quantity: item.qty
         })),
-        simulate: !isManualFailure,
-        simulate_status: isManualFailure ? "FAILED" : "PAID"
       };
 
       const res = await checkout(payload);
-      const finalOrderResult = { ...res, deliveryMethod: delivery, contact_email: email };
-      setOrderResult(finalOrderResult);
-      setOrderItemsSnapshot([...items]); 
-      setSubmitted(true);
-      
-      // Auto-enviar a WhatsApp si fue exitoso (después de cambiar estado)
-      if (res.status === "PAID") {
-          const waUrl = buildWhatsAppUrl(finalOrderResult, [...items]);
-          window.open(waUrl, '_blank');
-          clearCart();
+
+      if (res.payment_url) {
+        clearCart();
+        window.location.href = res.payment_url;
+      } else {
+        throw new Error("No payment URL received from server");
       }
     } catch (err) {
       alert(locale === "en" ? "Error processing order. Please try again." : "Error al procesar el pedido. Por favor intenta de nuevo.");
@@ -156,58 +136,13 @@ export default function CheckoutPage() {
     }
   };
 
-  const buildWhatsAppUrl = (result: any, cartItems: any[]) => {
-    if (!result) return "#";
-    const orderId = result.order_id;
-    const name = result.contact_name;
-    const email = result.contact_email;
-    const phone = result.contact_phone;
-    const totalVal = Number(result.total_amount) || 0;
-    const totalStr = fmt(totalVal);
-    const address = result.shipping_address || "N/A";
-    const isPickup = result.deliveryMethod === "pickup";
-    
-    let message = locale === "en" 
-        ? `☕ *NEW ORDER - DIFFIORI CAFÉ*\n\n`
-        : `☕ *NUEVO PEDIDO - DIFFIORI CAFÉ*\n\n`;
-        
-    message += `📄 *${t.orderNumber}:* ${orderId}\n`;
-    message += `💰 *VALOR PAGADO:* ${totalStr}\n\n`;
-
-    message += `👤 *DATOS DEL CLIENTE:*\n`;
-    message += `• *Nombre:* ${name}\n`;
-    message += `• *Email:* ${email}\n`;
-    message += `• *Teléfono:* ${phone}\n\n`;
-
-    if (isPickup) {
-        message += `📍 *ENTREGA:* Recoger en Tienda\n`;
-        message += `🏠 *Ubicación:* Cl. 17 Sur #1-37, Pitalito – Huila\n\n`;
-    } else {
-        message += `📍 *ENTREGA:* Envío a Domicilio\n`;
-        message += `🚚 *Dirección:* ${address}\n\n`;
-    }
-
-    message += `📦 *RESUMEN DE COMPRA:*\n`;
-    cartItems.forEach(item => {
-        message += `🔹 *${item.qty}x* ${item.name}${item.variant ? ` - [${item.variant}]` : ''}\n`;
-    });
-
-    message += `\n*Comprado desde www.diffioricafe.com*`;
-
-    return `https://wa.me/573227560973?text=${encodeURIComponent(message)}`;
-  };
-
-  const getWhatsAppUrl = () => {
-    return buildWhatsAppUrl(orderResult, orderItemsSnapshot);
-  };
-
   const sectionTitleStyle = "text-sm uppercase tracking-[0.3em] font-black text-[#4A3728] dark:text-primary-100 mb-8 flex items-center gap-3";
   const cardStyle = "bg-white/90 dark:bg-black/60 backdrop-blur-2xl border border-white/40 dark:border-white/5 shadow-mocha-premium rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:shadow-2xl";
   const labelStyle = "text-[10px] uppercase tracking-[0.2em] font-black text-[#4A3728]/60 dark:text-primary-200/60 ml-1 mb-2 block";
   const inputWrapperStyle = "space-y-1.5";
 
   /* ── Empty cart ── */
-  if (items.length === 0 && !submitted) {
+  if (items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center space-y-8">
         <motion.div 
@@ -232,125 +167,6 @@ export default function CheckoutPage() {
         >
           {t.goToShop}
         </Button>
-      </div>
-    );
-  }
-
-  /* ── Success ── */
-  if (submitted) {
-    const isPaid = orderResult?.status === "PAID";
-
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[75vh] px-6 text-center space-y-10">
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className={clsx(
-            "p-10 rounded-full",
-            isPaid ? "bg-primary/10 text-primary" : "bg-danger/10 text-danger"
-          )}
-        >
-          {isPaid ? (
-            <CheckCircle2Icon size={100} strokeWidth={1.5} />
-          ) : (
-            <XCircleIcon size={100} strokeWidth={1.5} />
-          )}
-        </motion.div>
-        
-        <div className="space-y-4">
-          <motion.h2 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-4xl md:text-5xl font-black uppercase tracking-[0.2em] text-[#4A3728] dark:text-primary-100"
-          >
-            {isPaid ? t.successTitle : (locale === "en" ? "Payment Failed" : "Pago Fallido")}
-          </motion.h2>
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="space-y-2"
-          >
-            <p className={clsx("text-2xl font-bold", isPaid ? "text-primary" : "text-danger")}>
-              {t.orderNumber} {orderResult?.order_id}
-            </p>
-            <p className="text-default-500 text-xl md:text-2xl font-light leading-relaxed max-w-2xl mx-auto">
-              {isPaid 
-                ? t.successMsg 
-                : (locale === "en" 
-                    ? "We could not process your payment. Please try again or contact us." 
-                    : "No pudimos procesar tu pago. Por favor intenta de nuevo o contáctanos.")
-              }
-            </p>
-          </motion.div>
-        </div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="flex flex-col items-center gap-8 w-full max-w-2xl px-4"
-        >
-          {isPaid ? (
-            <>
-              {/* QR Code Section for PC users */}
-              <div className="bg-white/90 dark:bg-black/40 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/20 shadow-mocha-premium flex flex-col md:flex-row items-center gap-8 w-full">
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-primary to-primary-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                  <div className="relative bg-white p-3 rounded-2xl">
-                    <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getWhatsAppUrl())}`} 
-                      alt="WhatsApp Order QR"
-                      className="w-[180px] h-[180px]"
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex-1 text-center md:text-left space-y-3">
-                  <h4 className="text-xl font-black uppercase tracking-widest text-[#4A3728] dark:text-primary-100">
-                    {locale === "en" ? "Scan to Confirm" : "Escanea para Confirmar"}
-                  </h4>
-                  <p className="text-default-500 text-sm leading-relaxed">
-                    {locale === "en" 
-                      ? "If you are on a computer without WhatsApp, scan this QR code with your phone to send the order confirmation." 
-                      : "Si estás en una computadora sin WhatsApp, escanea este código QR con tu celular para enviar la confirmación."}
-                  </p>
-                  <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-tighter justify-center md:justify-start">
-                    <WhatsAppIcon size={16} />
-                    {locale === "en" ? "Instant WhatsApp Message" : "Mensaje de WhatsApp Instantáneo"}
-                  </div>
-                </div>
-              </div>
-
-              <Button as={Link} href="/" className="w-full max-w-md btn-gold-premium h-16 text-lg font-black uppercase tracking-widest flex items-center justify-center gap-3">
-                <RefreshCcwIcon size={24} className="rotate-180" />
-                {t.backToHome}
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button 
-                onPress={() => setSubmitted(false)}
-                className="w-full btn-gold-premium h-16 text-lg font-black uppercase tracking-widest flex items-center justify-center gap-3"
-              >
-                <RefreshCcwIcon size={24} />
-                {locale === "en" ? "Try Again" : "Intentar de nuevo"}
-              </Button>
-              <Button 
-                as="a" 
-                href={getWhatsAppUrl()} 
-                target="_blank"
-                variant="flat"
-                className="w-full h-16 text-lg font-bold flex items-center justify-center gap-3"
-              >
-                <WhatsAppIcon size={24} color="#25D366" />
-                {locale === "en" ? "Help by WhatsApp" : "Ayuda por WhatsApp"}
-              </Button>
-            </>
-          )}
-        </motion.div>
       </div>
     );
   }
@@ -636,7 +452,7 @@ export default function CheckoutPage() {
                     className="w-full btn-gold-premium h-16 text-xl shadow-2xl flex items-center justify-center gap-3"
                   >
                     {loading ? <Spinner size="sm" color="white" /> : <CreditCardIcon size={20} />}
-                    {t.pay}
+                    {loading ? (locale === "en" ? "Redirecting..." : "Redirigiendo...") : t.pay}
                   </Button>
                   <Button
                     as={NextLink}
