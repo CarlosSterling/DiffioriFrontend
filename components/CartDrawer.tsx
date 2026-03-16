@@ -139,8 +139,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <Button
                 as={NextLink}
                 href="/productos"
-                variant="light"
+                variant="bordered"
                 fullWidth
+                radius="full"
+                className="border-2 border-primary/40 text-foreground hover:border-primary hover:bg-primary/5 transition-all font-bold uppercase tracking-widest text-xs h-14"
                 onPress={onClose}
               >
                 {t.continueShopping}

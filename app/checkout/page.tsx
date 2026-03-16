@@ -547,34 +547,23 @@ export default function CheckoutPage() {
 
           {/* ─── Payment ─── */}
           <Card className={cardStyle}>
-            <CardBody className="p-8 space-y-8">
+            <CardBody className="p-8 space-y-6">
               <h3 className={sectionTitleStyle}>
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs">3</div>
-                {t.paymentMethod}
+                MÉTODO DE PAGO
               </h3>
 
-              <div className="p-6 bg-primary/5 dark:bg-primary/10 border-2 border-primary/30 rounded-[2rem] flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white dark:bg-black/40 rounded-full flex items-center justify-center text-primary shadow-sm">
-                    <BuildingIcon size={24} />
-                  </div>
-                  <div>
-                    <p className="font-black text-[#4A3728] dark:text-white uppercase tracking-widest text-sm">{t.pse}</p>
-                    <p className="text-xs text-default-500">{t.pseDesc}</p>
-                  </div>
-                </div>
-                <div className="w-6 h-6 rounded-full border-2 border-primary flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-primary" />
-                </div>
-              </div>
-
-              <div className="p-8 bg-default-50 dark:bg-black/20 rounded-[2.5rem] border border-default-100 dark:border-white/5 text-center space-y-6">
-                <p className="text-default-500 font-medium italic leading-relaxed">
-                  &ldquo;{t.pseRedirect}&rdquo;
-                </p>
-                <div className={clsx(inputWrapperStyle, "max-w-md mx-auto")}>
-                  <label className={labelStyle}>{t.bankEmail}</label>
-                  <Input type="email" isRequired variant="bordered" placeholder="tu@email-banco.com" name="pse_email" size="lg" radius="lg" />
+              <div className="p-8 bg-primary/5 dark:bg-primary/10 border-2 border-primary/30 rounded-[2rem] flex flex-col items-center justify-center text-center gap-4">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-primary mb-2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="space-y-2">
+                  <p className="font-black text-[#4A3728] dark:text-white uppercase tracking-widest text-lg">
+                    Pago Seguro y Encriptado
+                  </p>
+                  <p className="text-default-500 font-medium leading-relaxed max-w-sm mx-auto">
+                    Al finalizar, serás redirigido a la pasarela oficial de Wompi (Bancolombia) donde podrás pagar de forma 100% segura con Tarjetas, PSE o Nequi.
+                  </p>
                 </div>
               </div>
             </CardBody>
