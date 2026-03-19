@@ -91,6 +91,7 @@ export interface LocaleDict {
     state: string;
     zipCode: string;
     pickupNote: string;
+    shippingNote: string;
     orderSummary: string;
     paymentMethod: string;
     creditCard: string;
@@ -243,6 +244,7 @@ const es: LocaleDict = {
     state: "Departamento / Estado",
     zipCode: "Código Postal",
     pickupNote: "Recoge tu pedido en: Cl. 17 Sur #1-37, Pitalito – Huila",
+    shippingNote: "El valor del domicilio está sujeto a la zona y cobertura del sitio de entrega.",
     orderSummary: "Resumen de compra",
     paymentMethod: "Método de pago",
     creditCard: "Tarjeta de crédito",

@@ -113,6 +113,7 @@ const en: LocaleDict = {
     state: "State / Department",
     zipCode: "Zip Code",
     pickupNote: "Pick up your order at: Cl. 17 Sur #1-37, Pitalito – Huila",
+    shippingNote: "The shipping cost is subject to the delivery location",
     orderSummary: "Order summary",
     paymentMethod: "Payment method",
     creditCard: "Credit card",

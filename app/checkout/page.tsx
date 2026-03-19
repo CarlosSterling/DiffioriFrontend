@@ -343,6 +343,12 @@ export default function CheckoutPage() {
                         size="lg" 
                         radius="lg" 
                       />
+                      {/* Nota de envío (Sujeto a sitio de entrega) */}
+                      <div className="p-8 bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-[2rem] mt-6">
+                        <p className="text-[#4A3728] dark:text-primary-100 font-medium leading-relaxed flex items-center gap-4">
+                          <span className="text-3xl">🚚</span> {t.shippingNote}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 ) : (
@@ -352,7 +358,7 @@ export default function CheckoutPage() {
                     animate={{ opacity: 1 }}
                     className="p-8 bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-[2rem] mt-4"
                   >
-                    <p className="text-[#4A3728] dark:text-primary-100 font-medium leading-relaxed flex items-start gap-4">
+                    <p className="text-[#4A3728] dark:text-primary-100 font-medium leading-relaxed flex items-center gap-4">
                       <span className="text-3xl">📍</span> {t.pickupNote}
                     </p>
                   </motion.div>
