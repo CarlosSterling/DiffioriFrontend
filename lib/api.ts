@@ -142,7 +142,7 @@ export async function checkout(payload: any) {
       let errorMsg = "Checkout failed";
       try {
         const errorData = await res.json();
-        errorMsg = JSON.stringify(errorData);
+        errorMsg = errorData?.error || JSON.stringify(errorData);
       } catch {
         errorMsg = await res.text().catch(() => `HTTP ${res.status}`);
       }

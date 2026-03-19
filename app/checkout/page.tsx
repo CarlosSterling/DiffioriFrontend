@@ -115,6 +115,7 @@ export default function CheckoutPage() {
         contact_phone: phone,
         shipping_address: fullAddress,
         items: items.map(item => ({
+          product_id: item.productId,
           variant_id: item.variantId,
           quantity: item.qty
         })),
@@ -129,8 +130,14 @@ export default function CheckoutPage() {
         throw new Error("No payment URL received from server");
       }
     } catch (err) {
-      alert(locale === "en" ? "Error processing order. Please try again." : "Error al procesar el pedido. Por favor intenta de nuevo.");
       console.error(err);
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : (locale === "en"
+              ? "Error processing order. Please try again."
+              : "Error al procesar el pedido. Por favor intenta de nuevo.");
+      alert(message);
     } finally {
       setLoading(false);
     }
