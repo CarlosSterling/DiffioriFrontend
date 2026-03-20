@@ -152,6 +152,28 @@ const en: LocaleDict = {
     send: "Send to WhatsApp",
     close: "Close",
   },
+  contact: {
+    hi: "Hi, I am",
+    preTitle: "WE ARE HERE FOR YOU",
+    pageSubtitle: "The flavor of our land and the warmth of our people at your service.",
+    title: "Send us a message",
+    name: "Name",
+    namePlaceholder: "Write your name",
+    email: "Email",
+    emailPlaceholder: "example@email.com",
+    phone: "Phone",
+    phonePlaceholder: "300 123 4567",
+    message: "Message",
+    messagePlaceholder: "How can we help you?",
+    submit: "Send via WhatsApp",
+    visitTitle: "Visit us at our",
+    mainOffice: "Main Office",
+    addressLabel: "Address",
+    addressLine1: "Cl. 17 Sur #1-37",
+    addressLine2: "Pitalito – Huila, Colombia",
+    openInMaps: "Open in Google Maps",
+    viewInMaps: "View in Google Maps",
+  },
 };
 
 export default en;

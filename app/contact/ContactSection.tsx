@@ -19,7 +19,9 @@ import { useLanguage } from "@/i18n/LanguageContext";
 const WHATSAPP_NUMBER = "573227560973"; // sin + ni espacios
 
 export default function ContactSection() {
-  const { locale } = useLanguage();
+  const { dict, locale } = useLanguage();
+  const t = dict.contact;
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -37,10 +39,10 @@ export default function ContactSection() {
 
     // Construye mensaje — líneas se unen con \n
     const msgLines = [
-      `Hola, soy ${form.name}`,
-      `Correo: ${form.email}`,
-      form.phone && `Teléfono: ${form.phone}`,
-      `Mensaje: ${form.message}`,
+      `${t.hi} ${form.name}`,
+      `${t.email}: ${form.email}`,
+      form.phone && `${t.phone}: ${form.phone}`,
+      `${t.message}: ${form.message}`,
     ]
       .filter(Boolean)
       .join("\n");
@@ -67,13 +69,13 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-white/20">
           {/* ---------- Formulario Glassmorphism (Izquierda en PC) ---------- */}
           <div className="order-2 lg:order-1 p-8 lg:p-12">
-            <h3 className="text-2xl font-bold mb-6 font-display text-primary-900 dark:text-primary-100">Envíanos un mensaje</h3>
+            <h3 className="text-2xl font-bold mb-6 font-display text-primary-900 dark:text-primary-100">{t.title}</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">Nombre</label>
+                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">{t.name}</label>
                 <Input
                   name="name"
-                  placeholder="Escribe tu nombre"
+                  placeholder={t.namePlaceholder}
                   size="lg"
                   value={form.name}
                   onChange={handleChange}
@@ -87,11 +89,11 @@ export default function ContactSection() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">Correo</label>
+                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">{t.email}</label>
                 <Input
                   name="email"
                   type="email"
-                  placeholder="ejemplo@correo.com"
+                  placeholder={t.emailPlaceholder}
                   size="lg"
                   value={form.email}
                   onChange={handleChange}
@@ -105,11 +107,11 @@ export default function ContactSection() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">Teléfono</label>
+                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">{t.phone}</label>
                 <Input
                   name="phone"
                   type="tel"
-                  placeholder="300 123 4567"
+                  placeholder={t.phonePlaceholder}
                   size="lg"
                   value={form.phone}
                   onChange={handleChange}
@@ -122,10 +124,10 @@ export default function ContactSection() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">Mensaje</label>
+                <label className="block text-primary-800 dark:text-primary-200 font-bold ml-1">{t.message}</label>
                 <Textarea
                   name="message"
-                  placeholder="¿Cómo podemos ayudarte?"
+                  placeholder={t.messagePlaceholder}
                   size="lg"
                   minRows={5}
                   value={form.message}
@@ -147,7 +149,7 @@ export default function ContactSection() {
                 className="btn-gold-premium"
                 endContent={<SendIcon size={18} />}
               >
-                Enviar por WhatsApp
+                {t.submit}
               </Button>
             </form>
           </div>
@@ -155,16 +157,16 @@ export default function ContactSection() {
           {/* ---------- Datos + mapa (Derecha en PC) ---------- */}
           <div className="order-1 lg:order-2 p-8 lg:p-12 bg-primary-50/10 dark:bg-primary-900/10 space-y-8 flex flex-col justify-center">
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold font-display">Visítanos en nuestra <br/><span className="text-primary">Oficina Principal</span></h2>
+              <h2 className="text-3xl font-bold font-display">{t.visitTitle} <br/><span className="text-primary">{t.mainOffice}</span></h2>
               <div className="space-y-2 text-lg text-default-600">
                 <div className="flex items-start gap-4 p-4 rounded-2xl hover:bg-default-100/50 transition-colors">
                   <div className="p-3 bg-primary-100/50 rounded-xl text-primary shrink-0">
                     <MapPinIcon size={24} />
                   </div>
                   <div>
-                    <span className="font-bold block text-foreground">Dirección</span>
-                    Cl. 17 Sur #1-37<br />
-                    Pitalito – Huila, Colombia
+                    <span className="font-bold block text-foreground">{t.addressLabel}</span>
+                    {t.addressLine1}<br />
+                    {t.addressLine2}
                   </div>
                 </div>
                 
@@ -193,7 +195,7 @@ export default function ContactSection() {
                   className="backdrop-blur-md font-bold px-6 py-2 rounded-full shadow-lg"
                   startContent={<MapPinIcon size={18} className="text-primary" />}
                 >
-                  {locale === "en" ? "Open in Google Maps" : "Ver en Google Maps"}
+                  {t.viewInMaps}
                 </Button>
               </div>
             </div>

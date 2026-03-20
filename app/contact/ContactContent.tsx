@@ -11,11 +11,9 @@ export default function ContactContent() {
     <div className="max-w-screen-lg mx-auto px-6 py-12">
       {/* Page Header */}
       <CinematicHeader 
-        preTitle={locale === "en" ? "WE ARE HERE FOR YOU" : "ESTAMOS PARA SERVIRTE"}
+        preTitle={dict.contact.preTitle}
         title={dict.nav.contactanos} 
-        subtitle={locale === "en" 
-          ? "The flavor of our land and the warmth of our people at your service." 
-          : "El sabor de nuestra tierra y la calidez de nuestra gente a tu servicio."} 
+        subtitle={dict.contact.pageSubtitle} 
       />
 
       <ContactSection />

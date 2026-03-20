@@ -130,6 +130,28 @@ export interface LocaleDict {
     send: string;
     close: string;
   };
+  contact: {
+    hi: string;
+    preTitle: string;
+    pageSubtitle: string;
+    title: string;
+    name: string;
+    namePlaceholder: string;
+    email: string;
+    emailPlaceholder: string;
+    phone: string;
+    phonePlaceholder: string;
+    message: string;
+    messagePlaceholder: string;
+    submit: string;
+    visitTitle: string;
+    mainOffice: string;
+    addressLabel: string;
+    addressLine1: string;
+    addressLine2: string;
+    openInMaps: string;
+    viewInMaps: string;
+  };
 }
 
 const es: LocaleDict = {
@@ -282,6 +304,28 @@ const es: LocaleDict = {
     placeholder: "Escribe tu mensaje aquí...",
     send: "Enviar a WhatsApp",
     close: "Cerrar",
+  },
+  contact: {
+    hi: "Hola, soy",
+    preTitle: "ESTAMOS PARA SERVIRTE",
+    pageSubtitle: "El sabor de nuestra tierra y la calidez de nuestra gente a tu servicio.",
+    title: "Envíanos un mensaje",
+    name: "Nombre",
+    namePlaceholder: "Escribe tu nombre",
+    email: "Correo",
+    emailPlaceholder: "ejemplo@correo.com",
+    phone: "Teléfono",
+    phonePlaceholder: "300 123 4567",
+    message: "Mensaje",
+    messagePlaceholder: "¿Cómo podemos ayudarte?",
+    submit: "Enviar por WhatsApp",
+    visitTitle: "Visítanos en nuestra",
+    mainOffice: "Oficina Principal",
+    addressLabel: "Dirección",
+    addressLine1: "Cl. 17 Sur #1-37",
+    addressLine2: "Pitalito – Huila, Colombia",
+    openInMaps: "Abrir en Google Maps",
+    viewInMaps: "Ver en Google Maps",
   },
 };
 
